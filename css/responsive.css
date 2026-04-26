@@ -1,0 +1,151 @@
+/* ==========================================================================
+   RESPONSIVE DESIGN (Tablets & Mobiles)
+   ========================================================================== */
+
+/* Tuer le flottement gauche/droite sur mobile (Scroll horizontal) */
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+/* Tablets (Max 992px) */
+@media (max-width: 992px) {
+    .split-layout, .split-layout.reverse { flex-direction: column; text-align: center; }
+    .split-layout .img-wrapper { width: 100%; }
+    
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    
+    .hero { min-height: auto; flex-direction: column; }
+    .hero-image { 
+        position: relative; 
+        width: 100%; 
+        height: 50vh; 
+        order: -1; 
+        border-radius: 0 0 2rem 2rem; 
+        box-shadow: none;
+    }
+    .hero-content { 
+        width: 100%; 
+        max-width: 100%; 
+        padding: 3rem 5% 5rem 5%; 
+        text-align: center; 
+    }
+    .hero-buttons { justify-content: center; }
+
+    /* EFFET SUPERPOSITION FONDATRICE */
+    .about-summary .split-layout.reverse { gap: 0; }
+    .founder-img { height: 350px !important; border-radius: 1.5rem; margin-bottom: 0; }
+    .founder-img img { object-position: center top !important; transform: scale(1.05); }
+    .about-summary .text-content {
+        margin-top: -60px; /* Le texte remonte sur la photo */
+        position: relative;
+        z-index: 10;
+        background: var(--color-darker);
+        padding: 2rem;
+        border-radius: 1.5rem;
+    }
+}
+
+/* Mobiles (Max 768px) */
+@media (max-width: 768px) {
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.8rem; }
+    .accent-font { font-size: 1.5rem; }
+    .section-padding { padding: 4rem 0; }
+
+    .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 2rem; }
+
+    /* PRODUITS ACCUEIL : 2 côte à côte sur mobile */
+    .home-products {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1rem !important;
+    }
+    .home-products .premium-card { padding: 1rem; border-radius: 1.5rem; }
+    .home-products h3 { font-size: 0.95rem; margin: 0.5rem 0; }
+    .home-products p { display: none; } /* Cache la description pour aérer */
+    .home-products .btn { padding: 8px; font-size: 0.75rem; border-radius: 0.5rem; width: 100%; }
+    .badge-best-seller { font-size: 0.55rem; padding: 3px 8px; top: -8px; }
+
+    /* PAGE BOUTIQUE : Produits bien aérés */
+    #products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1rem !important; }
+
+    .hero-buttons { flex-direction: column; }
+    
+    /* Menu Mobile Fixé */
+    .hamburger { display: flex; z-index: 1002; position: relative; }
+    .nav-menu { position: fixed; top: 0; right: -100%; width: 80%; max-width: 300px; height: 100vh; background-color: var(--color-dark); padding-top: 8rem; transition: var(--transition); box-shadow: -5px 0 15px rgba(0,0,0,0.5); z-index: 1001; }
+    .nav-menu.active { right: 0; }
+    .nav-menu ul { flex-direction: column; align-items: center; gap: 2rem; }
+    .nav-menu a { color: var(--color-white) !important; font-size: 1.1rem; }
+
+    /* Hamburger Animation */
+    .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    
+    .header .logo { position: relative; z-index: 1002; }
+
+    /* EFFET SUPERPOSITION FONDATRICE (Plus agressif sur téléphone) */
+    .founder-img { height: 280px !important; }
+    .about-summary .text-content { margin-top: -80px; padding: 1.5rem; }
+}
+/* ==========================================================================
+   CORRECTION DÉFINITIVE : CARTES PRODUITS (PAGE BOUTIQUE)
+   ========================================================================== */
+
+/* 1. Sur tous les écrans : on libère la largeur et on met les images en carré */
+.product-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-card .img-wrapper {
+    aspect-ratio: 1 / 1 !important; /* Transforme le format "tour" en format "carré" harmonieux */
+}
+
+.product-info {
+    padding: 1.5rem !important;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* ==========================================================================
+   SPÉCIAL MOBILE & TABLETTE (Max 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    #products-grid {
+        gap: 0.5rem !important; /* Rapproche légèrement les colonnes pour gagner de la place */
+    }
+    
+    .product-info {
+        padding: 0.8rem 0.5rem !important; /* Baisse drastiquement l'espace vide interne */
+    }
+    
+    .product-info h3 {
+        font-size: 0.85rem !important; /* Titre plus adapté au mobile */
+        margin-bottom: 0.2rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .product-info p {
+        display: none !important; /* On cache la description sur mobile pour ne pas faire un bloc de 2km de long */
+    }
+    
+    .product-info .product-price {
+        font-size: 1rem !important;
+        margin: 0.5rem 0 !important;
+    }
+    
+    .product-info .btn {
+        padding: 8px 5px !important;
+        font-size: 0.75rem !important;
+        width: 100% !important;
+        white-space: nowrap !important; /* Empêche le mot "Commander" de se couper en deux */
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+}

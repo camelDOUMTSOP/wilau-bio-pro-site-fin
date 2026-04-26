@@ -1,0 +1,533 @@
+/* ==========================================================================
+   VARIABLES & RESET
+   ========================================================================== */
+:root {
+    --color-dark: #333333;       /* Le gris foncé du nouveau site */
+    --color-darker: #1a1a1a;
+    --color-cream: #fffaf5;      /* Le fond beige très clair */
+    --color-gold: #F39200;       /* L'orange principal WiLAU */
+    --color-gold-hover: #e08600; 
+    --color-white: #ffffff;
+    --color-accent: #D4AF37;     /* Le vrai doré pour certains textes */
+    
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Montserrat', sans-serif;
+    
+    --transition: all 0.3s ease-in-out;
+    --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.05);
+    --shadow-strong: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-body);
+    color: var(--color-dark);
+    background-color: var(--color-white);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY & UTILITIES
+   ========================================================================== */
+h1, h2, h3, h4, .logo { 
+    font-family: var(--font-heading); 
+    font-weight: 700; 
+    text-transform: none; 
+    letter-spacing: normal; 
+}
+h1 { font-size: 3rem; margin-bottom: 1rem; }
+h2 { font-size: 2.2rem; margin-bottom: 1.5rem; }
+h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+p { margin-bottom: 1.5rem; font-weight: 400; color: #4b5563; }
+
+.accent-font { 
+    font-family: var(--font-heading); 
+    font-size: 1.5rem; 
+    text-transform: uppercase; 
+    font-weight: 700; 
+    letter-spacing: 2px; 
+    display: block; 
+    margin-bottom: 0.5rem; 
+    color: var(--color-gold);
+}
+
+.gold-text { color: var(--color-gold); }
+.text-light { color: var(--color-white); }
+.bg-dark { background-color: var(--color-dark); }
+.bg-cream { background-color: var(--color-cream); }
+.center { text-align: center; }
+
+.mt-1 { margin-top: 1rem; } .mt-2 { margin-top: 2rem; } .mt-3 { margin-top: 3rem; }
+.p-2 { padding: 2rem; } .p-3 { padding: 3rem; }
+.full-width { width: 100%; }
+
+.container { width: 90%; max-width: 1200px; margin: 0 auto; }
+.section-padding { padding: 6rem 0; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.split-layout { display: flex; align-items: center; gap: 4rem; }
+.split-layout > * { flex: 1; }
+.split-layout.reverse { flex-direction: row-reverse; }
+
+/* ==========================================================================
+   IMAGE HANDLING (MODERNISÉ : Bords arrondis et ombres)
+   ========================================================================== */
+.img-wrapper { 
+    position: relative; 
+    overflow: hidden; 
+    background-color: #f8fafc; 
+    border-radius: 1.5rem; /* Bords très arrondis */
+    box-shadow: var(--shadow-strong); /* Ombre douce et élégante */
+}
+.img-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.8s ease; }
+.img-wrapper:hover img { transform: scale(1.05); } /* Zoom au survol */
+
+.aspect-square { aspect-ratio: 1 / 1; }
+.aspect-portrait { aspect-ratio: 4 / 5; }
+.aspect-landscape { aspect-ratio: 16 / 9; }
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn {
+    display: inline-block; 
+    padding: 12px 32px; 
+    font-family: var(--font-body); 
+    font-weight: 600;
+    text-decoration: none; 
+    font-size: 1rem; 
+    transition: var(--transition);
+    cursor: pointer; 
+    border: none; 
+    text-align: center;
+    border-radius: 9999px; /* Boutons en forme de pilule */
+    box-shadow: var(--shadow-soft);
+}
+.btn.small { padding: 8px 24px; font-size: 0.9rem; }
+
+.btn-primary, .gold-btn { background-color: var(--color-gold); color: var(--color-white); }
+.btn-primary:hover, .gold-btn:hover { background-color: var(--color-gold-hover); transform: scale(1.05); box-shadow: var(--shadow-strong); }
+
+.btn-outline { border: 2px solid var(--color-dark); color: var(--color-dark); background: transparent; }
+.btn-outline:hover { background-color: var(--color-dark); color: var(--color-white); }
+.text-light .btn-outline { border-color: var(--color-white); color: var(--color-white); }
+.text-light .btn-outline:hover { background-color: var(--color-white); color: var(--color-dark); }
+
+/* ==========================================================================
+   HEADER & NAVIGATION
+   ========================================================================== */
+.header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 1.5rem 0; transition: var(--transition); background: transparent; }
+.header.scrolled { background-color: rgba(255, 255, 255, 0.95); padding: 1rem 0; box-shadow: var(--shadow-soft); backdrop-filter: blur(10px); }
+.header.scrolled .logo, .header.scrolled .nav-menu a { color: var(--color-dark); }
+body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:not(.scrolled) .nav-menu a { color: var(--color-white); }
+.bg-cream .header:not(.scrolled) .logo, .bg-cream .header:not(.scrolled) .nav-menu a { color: var(--color-dark); }
+
+.nav-container { display: flex; justify-content: space-between; align-items: center; }
+.nav-menu ul { list-style: none; display: flex; gap: 2rem; }
+.nav-menu a { text-decoration: none; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); font-weight: 600; }
+.nav-menu a:hover, .nav-menu a.active { color: var(--color-gold) !important; }
+
+.hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; z-index: 1001; }
+.hamburger span { display: block; width: 25px; height: 2px; background-color: var(--color-gold); transition: var(--transition); }
+
+/* ==========================================================================
+   LOGO WiLAU BIO (Image + Texte)
+   ========================================================================== */
+.logo-wrapper { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-text { display: flex; flex-direction: column; justify-content: center; }
+.logo-title { font-family: var(--font-body); font-weight: 700; font-size: 1.125rem; line-height: 1; color: var(--color-gold); }
+.logo-subtitle { font-family: var(--font-body); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: #6b7280; font-weight: 600; margin-top: 3px; }
+
+/* ==========================================================================
+   SECTIONS & CARDS (MODERNISÉES)
+   ========================================================================== */
+.hero, .page-banner { position: relative; display: flex; align-items: center; min-height: 100vh; background-color: var(--color-dark); overflow: hidden; }
+.page-banner { min-height: 50vh; justify-content: center; background-size: cover; background-position: center; }
+
+.hero-content { 
+    width: 50%; 
+    max-width: 50%; 
+    padding: 0 5%; 
+    z-index: 2; 
+}
+.hero-content h1, .hero-content p { color: var(--color-white); }
+.hero-buttons { display: flex; gap: 1rem; margin-top: 2rem; }
+.hero-image { position: absolute; right: 0; top: 0; width: 50%; height: 100%; border-radius: 0; }
+
+/* Style des cartes Produits et Blog */
+.product-card, .blog-card.full-shadow { 
+    background: var(--color-white); 
+    padding-bottom: 1.5rem; 
+    text-align: center; 
+    box-shadow: var(--shadow-soft); 
+    transition: var(--transition); 
+    border-radius: 1.5rem; /* Arrondis de la carte complète */
+    overflow: hidden; /* Empêche l'image de déborder */
+}
+.product-card:hover, .blog-card.full-shadow:hover { 
+    transform: translateY(-10px); 
+    box-shadow: var(--shadow-strong); 
+}
+/* Annule l'arrondi en bas de l'image pour qu'elle s'intègre parfaitement à la carte */
+.product-card .img-wrapper, .blog-card.full-shadow .img-wrapper { border-radius: 0; box-shadow: none; }
+.product-info { padding: 1.5rem 1.5rem 0; }
+
+/* Cartes des avis (Témoignages) */
+.testimonial-card { 
+    padding: 2.5rem; 
+    background: var(--color-white);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-soft);
+    position: relative; 
+    border: none;
+}
+.testimonial-card.with-img { padding: 0; border: none; background: transparent; box-shadow: none; }
+.quote-icon { font-size: 4rem; font-family: var(--font-heading); line-height: 0; position: absolute; top: 40px; left: 20px; opacity: 0.15; color: var(--color-gold); }
+.client-info h4 { margin-top: 1.5rem; font-size: 1rem; color: var(--color-gold); }
+.client-info span { font-size: 0.8rem; font-style: normal; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; }
+
+/* Cartes de valeurs (sur fond noir) */
+.value-card {
+    background: rgba(255, 255, 255, 0.05); 
+    padding: 2.5rem 1.5rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition);
+}
+.value-card:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-10px); }
+
+/* Divers */
+.cta-section { 
+    /* 1. Ajoute le nom de ton image entre les guillemets ci-dessous */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("assets/images/wilau img 1.jpg"); 
+    
+    background-attachment: fixed; 
+    background-size: cover; 
+    background-position: center;
+    padding: 100px 0; /* Ajoute un peu d'espace pour voir l'image */
+    color: #ffffff;   /* Force le texte en blanc */
+    text-align: center;
+}
+
+/* Force aussi le paragraphe qui était gris dans ta capture */
+.cta-section p {
+    color: #ffffff !important;
+}
+.footer { padding: 3rem 0; border-top: 1px solid rgba(255,255,255,0.1); }
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+/* ==========================================================================
+   FORMULAIRE
+   ========================================================================== */
+.premium-form .form-group { margin-bottom: 1.5rem; text-align: left; }
+.premium-form label { display: block; margin-bottom: 0.5rem; font-family: var(--font-heading); font-size: 1rem; font-weight: 600; color: var(--color-dark); }
+.premium-form input, .premium-form select, .premium-form textarea { width: 100%; padding: 15px 20px; border: 1px solid #e5e7eb; border-radius: 1rem; background: #f9fafb; font-family: var(--font-body); transition: var(--transition); }
+.premium-form input:focus, .premium-form textarea:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(243, 146, 0, 0.2); outline: none; background: var(--color-white); }
+/* ==========================================================================
+   BANNER - NOTRE HISTOIRE
+   ========================================================================== */
+.notre-histoire {
+    color: var(--color-white);
+}
+
+.notre-histoire h1 {
+    color: var(--color-white);
+}
+
+.notre-histoire p {
+    color: var(--color-white);
+}
+
+/* Style du bandeau */
+.page-banner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+
+/* Effet d'assombrissement supplémentaire si nécessaire */
+.page-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+    z-index: 1;
+}
+
+.page-banner .container {
+    position: relative;
+    z-index: 2;
+}/* Grille pour le catalogue (4 colonnes sur desktop) */
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+
+@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+/* ==========================================================================
+   AJUSTEMENTS MOBILE (2 colonnes pour le catalogue)
+   ========================================================================== */
+@media (max-width: 500px) { 
+    /* On force 2 colonnes et on réduit l'espacement */
+    .grid-4 { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 1rem; 
+    } 
+    
+    /* On compacte l'intérieur de la carte pour que ça respire */
+    .product-info {
+        padding: 1rem 0.5rem 0; 
+    }
+    
+    .product-category {
+        font-size: 0.65rem;
+    }
+    
+    .product-info h3 {
+        font-size: 0.85rem; 
+        margin-bottom: 0.3rem;
+        line-height: 1.2;
+    }
+    
+    /* On masque la description sur mobile pour aller droit au but (très courant en e-commerce) */
+    .product-info p {
+        display: none; 
+    }
+    
+    .product-price {
+        font-size: 0.95rem;
+        margin: 0.2rem 0 0.8rem;
+    }
+    
+    .btn.small {
+        padding: 8px 10px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Style des boutons de filtres */
+.filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
+.filter-btn {
+    background: transparent;
+    border: 2px solid var(--color-gold);
+    color: var(--color-dark);
+    padding: 8px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+}
+.filter-btn:hover, .filter-btn.active {
+    background: var(--color-gold);
+    color: var(--color-white);
+}
+
+/* Ajustement pour le prix sur les cartes */
+.product-price { font-size: 1.2rem; font-weight: 700; color: var(--color-gold); margin: 0.5rem 0 1rem; }
+.product-category { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; display: block; margin-bottom: 0.5rem; }
+.whatsapp-float i {
+    color: #fff;
+    font-size: 30px;
+}
+/* ==========================================================================
+   BOUTON WHATSAPP FLOTTANT
+   ========================================================================== */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 30px;
+    right: 30px;
+    background-color: #25d366; /* Le fond vert */
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-strong);
+    z-index: 9999; /* Force le bouton à rester au-dessus de tout */
+    text-decoration: none;
+    transition: var(--transition);
+    animation: pulse-wa 2s infinite;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    background-color: #1ebe57;
+    animation: none;
+}
+
+.whatsapp-float i {
+    color: #fff;
+    font-size: 35px; /* Taille de l'icône FontAwesome */
+}
+
+/* Animation de pulsation */
+@keyframes pulse-wa {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+/* Réduction sur mobile */
+@media (max-width: 768px) {
+    .whatsapp-float { width: 50px; height: 50px; bottom: 20px; right: 20px; }
+    .whatsapp-float i { font-size: 28px; }
+}/* ==========================================================================
+   RÉSEAUX SOCIAUX (FOOTER)
+   ========================================================================== */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.social-links a {
+    color: var(--color-white);
+    font-size: 1.5rem;
+    transition: var(--transition);
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.05);
+    width: 45px;
+    height: 45px;
+    line-height: 45px; /* Centre l'icône verticalement */
+    border-radius: 50%; /* Rend le fond rond */
+}
+
+.social-links a:hover {
+    color: var(--color-dark);
+    background-color: var(--color-gold);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(243, 146, 0, 0.4);
+}/* ==========================================================================
+   CARTES PREMIUM (ACCUEIL)
+   ========================================================================== */
+.premium-card {
+    background: var(--color-white);
+    padding: 1.5rem;
+    border-radius: 2.5rem; /* Gros arrondi élégant */
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+    position: relative;
+    border: 1px solid #f3f4f6;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.premium-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-strong);
+}
+
+/* Design spécifique pour le Best-Seller (Potion Magique) */
+.premium-card.best-seller {
+    border: 2px solid var(--color-gold);
+    transform: scale(1.05); /* Légèrement plus grande pour la mettre en valeur */
+    z-index: 2;
+}
+
+.premium-card.best-seller:hover {
+    transform: scale(1.05) translateY(-10px);
+}
+
+.badge-best-seller {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-gold);
+    color: var(--color-white);
+    padding: 5px 20px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 10px rgba(243, 146, 0, 0.3);
+    z-index: 10;
+}
+
+.premium-card h3 {
+    color: var(--color-gold);
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    margin: 1.5rem 0 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.premium-card p {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.premium-card .img-wrapper {
+    border-radius: 1.5rem;
+}
+.product-container {
+    display: flex;          /* Active le mode Flexbox */
+    justify-content: center; /* Centre les produits horizontalement */
+    gap: 20px;              /* Ajoute un espace entre les deux produits */
+    flex-wrap: nowrap;      /* Force les produits à rester sur une seule ligne */
+    padding: 20px;
+}
+
+.product-card {
+    width: 45%;             /* Ajuste la largeur pour qu'ils tiennent à deux */
+    max-width: 300px;       /* Pour éviter qu'ils ne deviennent trop grands */
+    position: relative;     /* Important pour ton badge Best Seller */
+}
+/* ==========================================================================
+   MEGA FOOTER PRO
+   ========================================================================== */
+.footer-pro { padding: 5rem 0 0 0; background-color: var(--color-darker); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1.5fr 1.5fr; gap: 3rem; margin-bottom: 3rem; }
+.footer-col p { color: #9ca3af; font-size: 0.9rem; }
+.footer-title { color: var(--color-white); font-size: 1.2rem; margin-bottom: 1.5rem; font-family: var(--font-heading); position: relative; padding-bottom: 0.5rem; }
+.footer-title::after { content: ''; position: absolute; left: 0; bottom: 0; width: 40px; height: 2px; background-color: var(--color-gold); }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+.footer-col ul a, .footer-col ul li { color: #9ca3af; text-decoration: none; transition: var(--transition); }
+.footer-col ul a:hover { color: var(--color-gold); padding-left: 5px; }
+.newsletter-form { display: flex; margin-top: 1rem; }
+.newsletter-form input { flex: 1; padding: 12px 15px; border: none; border-radius: 5px 0 0 5px; outline: none; }
+.newsletter-form button { padding: 12px 20px; border: none; border-radius: 0 5px 5px 0; background-color: var(--color-gold); color: #fff; cursor: pointer; }
+.footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 1.5rem 0; background-color: #111; color: #6b7280; font-size: 0.8rem; text-align: center; }
+
+@media (max-width: 992px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) { 
+    .footer-grid { grid-template-columns: 1fr; text-align: center; }
+    .footer-title::after { left: 50%; transform: translateX(-50%); }
+    .footer-col ul { align-items: center; }
+    .social-links { justify-content: center; }
+}/* ==========================================================================
+   RETOUR AU DESIGN PREMIUM : EFFET ZOOM SANS COUPURE
+   ========================================================================== */
+
+/* 1. On remet l'image en plein écran (cover) pour l'effet "Waouh" de près */
+.product-card .img-wrapper img,
+.premium-card .img-wrapper img {
+    object-fit: cover !important; 
+    object-position: center !important; 
+    padding: 0 !important; 
+}
+
+/* 2. On enlève le fond blanc rajouté pour retrouver tes beaux décors */
+.product-card .img-wrapper,
+.premium-card .img-wrapper {
+    background-color: transparent !important; 
+}
+
+/* 3. LA SOLUTION MAGIQUE : On transforme les boîtes carrées en boîtes "Portrait" (plus hautes) */
+.product-card .img-wrapper,
+.premium-card .img-wrapper {
+    aspect-ratio: 4 / 5 !important; /* Format vertical qui épouse parfaitement la hauteur de tes bouteilles ! */
+}

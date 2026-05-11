@@ -473,18 +473,21 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
 .premium-card .img-wrapper {
     border-radius: 1.5rem;
 }
-.product-container {
-    display: flex;          /* Active le mode Flexbox */
-    justify-content: center; /* Centre les produits horizontalement */
-    gap: 20px;              /* Ajoute un espace entre les deux produits */
-    flex-wrap: nowrap;      /* Force les produits à rester sur une seule ligne */
-    padding: 20px;
+/* ==========================================================================
+   GRILLE CATALOGUE — 4 colonnes desktop | breakpoints dans responsive.css
+   ========================================================================== */
+#products-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1.5rem !important;
+    width: 100%;
 }
 
-.product-card {
-    width: 45%;             /* Ajuste la largeur pour qu'ils tiennent à deux */
-    max-width: 300px;       /* Pour éviter qu'ils ne deviennent trop grands */
-    position: relative;     /* Important pour ton badge Best Seller */
+/* Les cartes occupent toute la cellule de grille */
+#products-grid .product-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important; /* Évite le débordement dans une cellule de grille */
 }
 /* ==========================================================================
    MEGA FOOTER PRO

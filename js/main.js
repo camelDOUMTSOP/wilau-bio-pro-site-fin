@@ -1,183 +1,118 @@
 document.addEventListener('DOMContentLoaded', () => {
-    /* ==========================================================================
-       STICKY HEADER & MENU
-       ========================================================================== */
-    const header = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) header.classList.add('scrolled');
-        else header.classList.remove('scrolled');
-    });
 
+    // 1. STICKY HEADER & MENU HAMBURGER (Gardés tels quels)
+    const header = document.getElementById('header');
+    if (header) {
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+    }
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('nav-menu');
-    if (hamburger) {
+    if (hamburger && navMenu) {
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
     }
 
-    const navLinks = document.querySelectorAll('.nav-menu a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-        });
-    });
-
-    /* ==========================================================================
-       SCROLL REVEAL ANIMATION
-       ========================================================================== */
+    // 2. SCROLL REVEAL (Gardé pour l'affichage fluide)
     const revealElements = document.querySelectorAll('.reveal');
-    const revealOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
-
-    const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, revealOptions);
-
-    revealElements.forEach(el => revealOnScroll.observe(el));
-
-    /* ==========================================================================
-       CATALOGUE DYNAMIQUE OPTIMISÉ (Base de données CORRIGÉE)
-       ========================================================================== */
-    const productsGrid = document.getElementById('products-grid');
-    const loadMoreBtn = document.getElementById('load-more-btn');
-
-    if (productsGrid) {
-        
-        // Ajout automatique du bouton "Cheveux" dans les filtres s'il n'y est pas
-        const filtersContainer = document.getElementById('product-filters');
-        if (filtersContainer && !document.querySelector('[data-filter="cheveux"]')) {
-            const cheveuxBtn = document.createElement('button');
-            cheveuxBtn.className = 'filter-btn';
-            cheveuxBtn.setAttribute('data-filter', 'cheveux');
-            cheveuxBtn.textContent = 'Cheveux';
-            filtersContainer.appendChild(cheveuxBtn);
-        }
-
-        // BASE DE DONNÉES SYNCHRONISÉE AVEC LES ÉTIQUETTES DES BOUTEILLES
-        const productsData = [
-            { id: 1, image: "1.png", category: "cheveux", name: "Shampooing FAITHY", desc: "Nettoie, purifie et assainit le cuir chevelu.", price: "7 500" },
-            { id: 2, image: "2.png", category: "visage", name: "Masque à l'Argile Verte", desc: "Soin du visage pour peaux grasses et mixtes.", price: "10 000" },
-            { id: 3, image: "3.png", category: "cheveux", name: "Crème de Cheveux FAITHY", desc: "Nourrit, renforce et active la pousse.", price: "7 500" },
-            { id: 4, image: "4.png", category: "cheveux", name: "Sérum Active Pousse", desc: "Stimule la croissance des cheveux.", price: "10 000" },
-            { id: 5, image: "5.png", category: "visage", name: "ADOU Gel Nettoyant", desc: "Nettoie et purifie la peau du visage.", price: "10 000" },
-            { id: 6, image: "31.png", category: "serum", name: "Potion Magique Visage", desc: "Revitalise et illumine le teint.", price: "10 000" },
-            { id: 7, image: "7.png", category: "visage", name: "Lotion Pink Sun", desc: "Clarifiante, anti-taches et anti-acné.", price: "5 000" },
-            { id: 8, image: "8.JPG", category: "serum", name: "Masque à l'Argile blanche", desc: "Soin du visage pour peaux , mixtes.", price: "10 000" },
-            { id: 9, image: "9.png", category: "visage", name: "Lotion Green Moon", desc: "Anti-taches et anti-acné.", price: "5 000" },
-            { id: 10, image: "10.png", category: "cheveux", name: "Traitement de Cheveux FAITHY", desc: "Stimule la croissance et fortifie les cheveux.", price: "7 500" },
-            { id: 11, image: "11.png", category: "visage", name: "Crème de Visage DIVA", desc: "Nourrit et illumine la peau.", price: "7 500" },
-            { id: 12, image: "12.png", category: "corps", name: "Gommage LYLY", desc: "Exfolie le visage et le corps.", price: "7 500" },
-            { id: 13, image: "13.JPG", category: "visage", name: "SHINE Crème de jour", desc: "Soin purifiant naturel.", price: "10 000" },
-            { id: 14, image: "14.png", category: "visage", name: "Masque à l'Argile Rouge", desc: "Soin pour peaux sèches et sensibles.", price: "10 000" },
-            { id: 15, image: "15.png", category: "visage", name: "Crème de Visage DIAMOND", desc: "Clarifie et unifie le teint.", price: "7 500" },
-            { id: 16, image: "16.png", category: "visage", name: "Crème de Visage KIMMY", desc: "Hydrate et adoucit la peau.", price: "5 000" },
-            { id: 17, image: "17.png", category: "corps", name: "Lait de Corps DIVA", desc: "Clarifiant pour teints clairs.", price: "15 000" },
-            { id: 18, image: "18.JPG", category: "visage", name: "TRESOR", desc: "gel nettoyant exfoliant et DESINCRUSTANT", price: "30 000" },
-            { id: 19, image: "91.JPEG", category: "visage", name: "Masque à l'Argile Rose", desc: "Soin pour peaux sèches et sensibles.", price: "10 000" },
-            { id: 20, image: "20.png", category: "corps", name: "Gel Douche LIGHT", desc: "Gommant et éclaircissant.", price: "7 500" },
-            { id: 21, image: "21.png", category: "corps", name: "Lait de Corps KIMMY", desc: "Hydratant et clarifiant.", price: "12 500" },
-            { id: 22, image: "22.png", category: "corps", name: "Lait de Corps DIAMOND", desc: "Super éclaircissant pour teints métissés.", price: "17 500" },
-            { id: 23, image: "23.png", category: "corps", name: "Lait de Corps SHINE", desc: "Hydrate et illumine la peau.", price: "10 000" },
-            { id: 24, image: "24.png", category: "corps", name: "Gel Douche GLOW", desc: "Nettoie et illumine la peau.", price: "7 500" }
-        ];
-
-        let currentCategory = "all";
-        let currentPage = 1;
-        const itemsPerPage = 12;
-
-        function getWhatsAppLink(productName, productPrice) {
-            const message = `Bonjour Wilau Bio, je souhaite commander le produit : ${productName} à ${productPrice} FCFA.`;
-            return `https://wa.me/237699430350?text=${encodeURIComponent(message)}`;
-        }
-
-        function displayProducts(category = "all", reset = true) {
-            if (reset) {
-                productsGrid.innerHTML = ""; 
-                currentPage = 1;
-                currentCategory = category;
-            }
-            
-            const filteredProducts = currentCategory === "all" 
-                ? productsData 
-                : productsData.filter(product => product.category === currentCategory);
-
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const productsToShow = filteredProducts.slice(startIndex, endIndex);
-
-            productsToShow.forEach(product => {
-                const card = document.createElement('div');
-                card.classList.add('product-card'); 
-                
-                card.innerHTML = `
-                    <div class="img-wrapper aspect-portrait">
-                        <img src="assets/images/${product.image}" alt="${product.name}" loading="lazy" decoding="async" onerror="this.src='assets/images/placeholder.png'">
-                    </div>
-                    <div class="product-info">
-                        <span class="product-category" style="font-size: 0.75rem; text-transform: uppercase; color: #6b7280; display: block; margin-bottom: 0.5rem;">${product.category}</span>
-                        <h3>${product.name}</h3>
-                        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">${product.desc}</p>
-                        <div class="product-price" style="font-size: 1.2rem; font-weight: 700; color: #F39200; margin: 0.5rem 0 1rem;">${product.price} FCFA</div>
-                        <a href="${getWhatsAppLink(product.name, product.price)}" target="_blank" class="btn btn-outline small full-width">Commander</a>
-                    </div>
-                `;
-                productsGrid.appendChild(card);
+    if (revealElements.length > 0) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
             });
-
-            if (endIndex < filteredProducts.length) {
-                if (loadMoreBtn) loadMoreBtn.style.display = "inline-block";
-            } else {
-                if (loadMoreBtn) loadMoreBtn.style.display = "none";
-            }
-        }
-
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                displayProducts(e.target.getAttribute('data-filter'), true);
-            });
-        });
-
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener('click', () => {
-                currentPage++;
-                displayProducts(currentCategory, false);
-            });
-        }
-
-        displayProducts("all", true);
+        }, { threshold: 0.08 });
+        revealElements.forEach(el => revealObserver.observe(el));
     }
 
-    /* ==========================================================================
-       FORMULAIRE DE CONTACT VERS WHATSAPP
-       ========================================================================== */
-    const contactForm = document.getElementById('whatsapp-contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Empêche la page de se recharger
+    // 3. CATALOGUE DYNAMIQUE WiLAU BIO
+    const productsGrid = document.getElementById('products-grid');
+    if (productsGrid) {
+        const productsData = [
+            // --- VISAGE (15 produits) ---
+            { id: 1,  image: "lait demaquillant lyly.jpeg", category: "visage", name: "Lait Démaquillant Lyly", desc: "Démaquillant doux à base de coco et amande douce. Adapté à tous types de peaux.", price: "7 500" },
+            { id: 2,  image: "18.JPG", category: "visage", name: "Gel Trésor Exfoliant", desc: "Exfolie délicatement et désincruste les pores. Peaux mixtes, sensibles ou grasses.", price: "10 000" },
+            { id: 3,  image: "5.png", category: "visage", name: "Gel Nettoyant Adou", desc: "Débarrasse la peau des impuretés et resserre les pores.", price: "10 000" },
+            { id: 4,  image: "12.png", category: "visage corps", name: "Gommage Lyly", desc: "Exfoliation profonde visage et corps. Élimine les cellules mortes pour un teint neuf.", price: "7 500" },
+            { id: 5,  image: "2.png", category: "visage", name: "Masque Argile Verte", desc: "L'allié incontournable pour maîtriser la peau acnéique et grasse.", price: "10 000" },
+            { id: 6,  image: "8.JPG", category: "visage", name: "Masque Argile Blanche", desc: "Lifte la peau, apporte de l'éclat et serre les pores. Idéal peaux matures.", price: "10 000" },
+            { id: 7,  image: "14.png", category: "visage", name: "Masque Argile Rouge", desc: "Soin nourrissant et coup d'éclat pour peaux sèches et mixtes.", price: "10 000" },
+            { id: 8,  image: "91.JPEG", category: "visage", name: "Masque Argile Rose", desc: "Contrôle l'acné juvénile. Parfait pour les peaux sensibles et réactives.", price: "10 000" },
+            { id: 9,  image: "7.png", category: "visage", name: "Lotion Pink Sun", desc: "Éclaircissante anti-tache et acné. Lisse la peau claire.", price: "5 000" },
+            { id: 10, image: "9.png", category: "visage", name: "Lotion Green Moon", desc: "Anti-tache et acné. Adaptée aux peaux noires et caramel.", price: "5 000" },
+            { id: 11, image: "31.png", category: "visage serum", name: "Sérum Potion Magique", desc: "Concentré d'huiles et vitamines contre cernes, rougeurs et ridules (+28 ans).", price: "10 000" },
+            { id: 12, image: "13.JPG", category: "visage", name: "Crème de visage Shine", desc: "Crème de jour révélateur d'éclat pour toutes les carnations naturelles.", price: "10 000" },
+            { id: 13, image: "16.png", category: "visage", name: "Crème de visage Kimmy", desc: "Hydratante, nourrissante et clarifiante pour un teint caramel parfait.", price: "5 000" },
+            { id: 14, image: "11.png", category: "visage", name: "Crème de visage Diva", desc: "Soin clarifiant et correcteur d'imperfections.", price: "7 500" },
+            { id: 15, image: "15.png", category: "visage", name: "Crème de visage Diamond", desc: "Super éclaircissante, anti-âge au collagène et acide hyaluronique.", price: "7 500" },
 
-            // Récupération des valeurs tapées par le client
-            const name = document.getElementById('name').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
+            // --- CORPS (9 produits) ---
+            { id: 16, image: "20.png", category: "corps", name: "Gel Douche Light", desc: "Clarifiant et gommant pour peaux lumineuses (Gammes Shine & Kimmy).", price: "7 500" },
+            { id: 17, image: "24.png", category: "corps", name: "Gel Douche Glow", desc: "Super éclaircissant et gommant pour peau radieuse (Gammes Diva & Diamond).", price: "7 500" },
+            { id: 18, image: "23.png", category: "corps", name: "Lait corps Shine", desc: "Révélateur d'éclat hydratant pour peaux ébène et carnations naturelles.", price: "10 000" },
+            { id: 19, image: "21.png", category: "corps", name: "Lait corps Kimmy", desc: "Hydratant et nourrissant pour un teint caramel clarifié.", price: "12 500" },
+            { id: 20, image: "17.png", category: "corps", name: "Lait Diva", desc: "Clarifiant pour un teint clair uniforme sans imperfections.", price: "15 000" },
+            { id: 21, image: "22.png", category: "corps", name: "Lait Diamond", desc: "Super éclaircissant et hydratant pour un éclat métissé naturel.", price: "17 500" },
+            { id: 22, image: "radiance.jpeg", category: "corps serum", name: "Huile Radiance", desc: "Brillance assurée et protection de l'épiderme contre les agressions.", price: "10 000" },
+            { id: 23, image: "le secret de meme.jpeg", category: "corps", name: "Secret de Mémé", desc: "Crème raffermissante, tonifiante et galbante pour les seins (100% naturel).", price: "15 000" },
 
-            // Construction du message propre
-            const whatsappText = `Bonjour Wilau Bio ! ✨\n\nJe suis *${name}*.\n*Sujet :* ${subject}\n\n*Mon message :*\n${message}`;
-            
-            // Encodage et ouverture de WhatsApp
-            const encodedText = encodeURIComponent(whatsappText);
-            const whatsappUrl = `https://wa.me/237699430350?text=${encodedText}`;
+            // --- CHEVEUX (5 produits) ---
+            { id: 24, image: "1.png", category: "cheveux", name: "Shampooing Faithy", desc: "Antipelliculaire. Lave et assainit le cuir chevelu en profondeur.", price: "7 500" },
+            { id: 25, image: "faity leave in conditioner.jpeg", category: "cheveux", name: "Leave-in Faithy", desc: "Démêle et protège les cheveux contre la chaleur du séchoir.", price: "8 000" },
+            { id: 26, image: "10.png", category: "cheveux", name: "Traitement Faithy", desc: "Aux plantes et beurres végétaux. Stimule la pousse et stop la casse.", price: "7 500" },
+            { id: 27, image: "creme de cheuveux faity].jpeg", category: "cheveux", name: "Huile Faithy", desc: "Nourrissante, protectrice et activatrice de pousse.", price: "7 500" },
+            { id: 28, image: "serum active pousse faity.jpeg", category: "cheveux", name: "Sérum Active Pousse", desc: "Stimule la croissance des cheveux et de la barbe.", price: "10 000" },
 
-            window.location.href = whatsappUrl;
+            // --- PACKS (5 nouveaux packs) ---
+            { id: 29, image: "gamme shine.jpeg", category: "pack", name: "Pack Shine", desc: "Routine complète pour révéler l'éclat des peaux naturelles.", price: "Promo" },
+            { id: 30, image: "gamme kymy.jpeg", category: "pack", name: "Pack Kimmy", desc: "Le secret du teint caramel parfait en un coffret.", price: "Promo" },
+            { id: 31, image: "gamme diva.jpeg", category: "pack", name: "Pack Diva", desc: "Routine clarifiante intégrale pour un visage et corps sans taches.", price: "Promo" },
+            { id: 32, image: "gamme diamond.jpeg", category: "pack", name: "Pack Diamond", desc: "Luxe suprême pour un éclaircissement intense et anti-âge.", price: "Promo" },
+            { id: 33, image: "gamme fathy.jpeg", category: "pack", name: "Pack Faithy", desc: "Gamme capillaire complète pour la force et la pousse.", price: "Promo" }
+        ];
+
+        function displayProducts(filter = "all") {
+            productsGrid.innerHTML = "";
+            const filtered = (filter === "all") 
+                ? productsData 
+                : productsData.filter(p => p.category.split(' ').includes(filter));
+
+            filtered.forEach(p => {
+                const labelMap = { visage: "Visage", corps: "Corps", cheveux: "Cheveux", pack: "Pack" };
+                const categoryLabel = labelMap[p.category.split(' ')[0]] || p.category.split(' ')[0];
+
+                const card = document.createElement('div');
+                card.className = "product-card reveal active"; // Forcé à active pour éviter l'écran blanc
+                card.innerHTML = `
+                    <div class="img-wrapper">
+                        <img src="assets/images/${p.image}" alt="${p.name}" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">${categoryLabel}</span>
+                        <h3>${p.name}</h3>
+                        <p>${p.desc}</p>
+                        <div class="product-price">${p.price === 'Promo' ? '<span style="color:var(--color-gold);">Offre Spéciale</span>' : p.price + ' FCFA'}</div>
+                        <a href="https://wa.me/237699430350?text=Bonjour%20WiLAU%20BIO%20%E2%9C%A8%2C%20j'ai%20d%C3%A9couvert%20votre%20boutique%20en%20ligne%20et%20je%20souhaiterais%20commander%20le%20produit%20suivant%20%3A%20*${encodeURIComponent(p.name)}*.%20Est-il%20disponible%20%3F" class="btn btn-primary small" target="_blank">Commander</a>
+                           class="btn btn-primary small" target="_blank">Commander</a>
+                    </div>`;
+                productsGrid.appendChild(card);
+            });
+        }
+
+        // Activation des filtres
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                displayProducts(btn.dataset.filter);
+            });
         });
+
+        displayProducts("all");
     }
 });

@@ -66,8 +66,12 @@ html, body {
     .home-products .btn { padding: 8px; font-size: 0.75rem; border-radius: 0.5rem; width: 100%; }
     .badge-best-seller { font-size: 0.55rem; padding: 3px 8px; top: -8px; }
 
-    /* PAGE BOUTIQUE : Produits bien aérés */
-    #products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1rem !important; }
+    /* PAGE BOUTIQUE : 2 colonnes sur mobile */
+    #products-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.8rem !important;
+    }
 
     .hero-buttons { flex-direction: column; }
     
@@ -90,61 +94,65 @@ html, body {
     .about-summary .text-content { margin-top: -80px; padding: 1.5rem; }
 }
 /* ==========================================================================
-   CORRECTION DÉFINITIVE : CARTES PRODUITS (PAGE BOUTIQUE)
+   CARTES PRODUITS — Tous écrans
    ========================================================================== */
 
-/* 1. Sur tous les écrans : on libère la largeur et on met les images en carré */
 .product-card {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
     width: 100% !important;
     max-width: 100% !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    min-width: 0 !important;
 }
 
 .product-card .img-wrapper {
-    aspect-ratio: 1 / 1 !important; /* Transforme le format "tour" en format "carré" harmonieux */
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 0 !important;
+    flex-shrink: 0;
 }
 
 .product-info {
-    padding: 1.5rem !important;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+    padding: 1.2rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
 }
 
 /* ==========================================================================
-   SPÉCIAL MOBILE & TABLETTE (Max 768px)
+   SPÉCIAL MOBILE (Max 768px) — Cartes produits
    ========================================================================== */
 @media (max-width: 768px) {
     #products-grid {
-        gap: 0.5rem !important; /* Rapproche légèrement les colonnes pour gagner de la place */
+        gap: 0.6rem !important;
     }
     
     .product-info {
-        padding: 0.8rem 0.5rem !important; /* Baisse drastiquement l'espace vide interne */
+        padding: 0.7rem 0.5rem !important;
     }
     
     .product-info h3 {
-        font-size: 0.85rem !important; /* Titre plus adapté au mobile */
+        font-size: 0.82rem !important;
         margin-bottom: 0.2rem !important;
         line-height: 1.2 !important;
     }
     
-    .product-info p {
-        display: none !important; /* On cache la description sur mobile pour ne pas faire un bloc de 2km de long */
-    }
+   .product-info p {
+    display: block !important;
+    font-size: 0.8rem; /* Taille adaptée pour mobile */
+    margin-bottom: 10px;
+}
     
     .product-info .product-price {
-        font-size: 1rem !important;
-        margin: 0.5rem 0 !important;
+        font-size: 0.95rem !important;
+        margin: 0.3rem 0 !important;
     }
     
     .product-info .btn {
-        padding: 8px 5px !important;
-        font-size: 0.75rem !important;
+        padding: 7px 5px !important;
+        font-size: 0.72rem !important;
         width: 100% !important;
-        white-space: nowrap !important; /* Empêche le mot "Commander" de se couper en deux */
+        white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
     }

@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // --- CHEVEUX (5 produits) ---
             { id: 24, image: "1.png", category: "cheveux", name: "Shampooing Faithy", desc: "Antipelliculaire. Lave et assainit le cuir chevelu en profondeur.", price: "7 500" },
-            { id: 25, image: "faity leave in conditioner.jpeg", category: "cheveux", name: "Leave-in Faithy", desc: "Démêle et protège les cheveux contre la chaleur du séchoir.", price: "8 000" },
+            { id: 25, image: "faity leave in conditioner.jpeg", category: "cheveux", name: "Leave-in conditioner", desc: "Démêle et protège les cheveux contre la chaleur du séchoir.", price: "7 500" },
             { id: 26, image: "10.png", category: "cheveux", name: "Traitement Faithy", desc: "Aux plantes et beurres végétaux. Stimule la pousse et stop la casse.", price: "7 500" },
             { id: 27, image: "creme de cheuveux faity].jpeg", category: "cheveux", name: "Huile Faithy", desc: "Nourrissante, protectrice et activatrice de pousse.", price: "7 500" },
             { id: 28, image: "serum active pousse faity.jpeg", category: "cheveux", name: "Sérum Active Pousse", desc: "Stimule la croissance des cheveux et de la barbe.", price: "10 000" },
@@ -82,26 +82,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? productsData 
                 : productsData.filter(p => p.category.split(' ').includes(filter));
 
-            filtered.forEach(p => {
-                const labelMap = { visage: "Visage", corps: "Corps", cheveux: "Cheveux", pack: "Pack" };
-                const categoryLabel = labelMap[p.category.split(' ')[0]] || p.category.split(' ')[0];
+          filtered.forEach(p => {
+    const labelMap = { visage: "Visage", corps: "Corps", cheveux: "Cheveux", pack: "Pack" };
+    const categoryLabel = labelMap[p.category.split(' ')[0]] || p.category.split(' ')[0];
 
-                const card = document.createElement('div');
-                card.className = "product-card reveal active"; // Forcé à active pour éviter l'écran blanc
-                card.innerHTML = `
-                    <div class="img-wrapper">
-                        <img src="assets/images/${p.image}" alt="${p.name}" loading="lazy">
-                    </div>
-                    <div class="product-info">
-                        <span class="product-category">${categoryLabel}</span>
-                        <h3>${p.name}</h3>
-                        <p>${p.desc}</p>
-                        <div class="product-price">${p.price === 'Promo' ? '<span style="color:var(--color-gold);">Offre Spéciale</span>' : p.price + ' FCFA'}</div>
-                        <a href="https://wa.me/237699430350?text=Bonjour%20WiLAU%20BIO%20%E2%9C%A8%2C%20j'ai%20d%C3%A9couvert%20votre%20boutique%20en%20ligne%20et%20je%20souhaiterais%20commander%20le%20produit%20suivant%20%3A%20*${encodeURIComponent(p.name)}*.%20Est-il%20disponible%20%3F" class="btn btn-primary small" target="_blank">Commander</a>
-                           class="btn btn-primary small" target="_blank">Commander</a>
-                    </div>`;
-                productsGrid.appendChild(card);
-            });
+    const card = document.createElement('div');
+    card.className = "product-card reveal active"; 
+    card.innerHTML = `
+        <div class="img-wrapper">
+            <img src="assets/images/${p.image}" alt="${p.name}" loading="lazy">
+        </div>
+        <div class="product-info">
+            <span class="product-category">${categoryLabel}</span>
+            <h3>${p.name}</h3>
+            <p>${p.desc}</p>
+            <div class="product-price">${p.price === 'Promo' ? '<span style="color:var(--color-gold);">Offre Spéciale</span>' : p.price + ' FCFA'}</div>
+            
+            <a href="https://wa.me/237699430350?text=Bonjour%20WiLAU%20BIO%20%E2%9C%A8%2C%20j'ai%20d%C3%A9couvert%20votre%20boutique%20en%20ligne%20et%20je%20souhaiterais%20commander%20le%20produit%20suivant%20%3A%20*${encodeURIComponent(p.name)}*.%20Est-il%20disponible%20%3F" 
+               class="btn btn-primary small" 
+               target="_blank">Commander</a>
+        </div>`; // J'ai supprimé la ligne en trop ici
+    productsGrid.appendChild(card);
+});
         }
 
         // Activation des filtres
@@ -114,5 +116,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         displayProducts("all");
+    }
+    
+    // PARTIE TEMOIGNAGES
+    const track = document.getElementById('testimonial-track');
+    if (track) {
+        let slidesHTML = '';
+        const totalImages = 35; 
+
+        for (let i = 1; i <= totalImages; i++) {
+            // AJOUT DE /images/ ICI :
+            slidesHTML += `
+                <div class="testimonial-slide">
+                    <img src="assets/images/testy${i}.jpeg" alt="Témoignage ${i}" loading="lazy">
+                </div>
+            `;
+        }
+        track.innerHTML = slidesHTML + slidesHTML;
     }
 });

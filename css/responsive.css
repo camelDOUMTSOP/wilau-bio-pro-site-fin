@@ -2,51 +2,65 @@
    RESPONSIVE DESIGN (Tablets & Mobiles)
    ========================================================================== */
 
-/* Tuer le flottement gauche/droite sur mobile (Scroll horizontal) */
+/* Empêche le scroll horizontal */
 html, body {
     overflow-x: hidden;
     max-width: 100vw;
 }
 
-/* Tablets (Max 992px) */
+/* ==========================================================================
+   TABLETS (Max 1024px)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .grid-4 { grid-template-columns: repeat(3, 1fr); }
+    #products-grid { grid-template-columns: repeat(3, 1fr) !important; }
+}
+
+/* ==========================================================================
+   TABLETS (Max 992px)
+   ========================================================================== */
 @media (max-width: 992px) {
     .split-layout, .split-layout.reverse { flex-direction: column; text-align: center; }
     .split-layout .img-wrapper { width: 100%; }
-    
+
     .grid-3 { grid-template-columns: repeat(2, 1fr); }
-    
+
     .hero { min-height: auto; flex-direction: column; }
-    .hero-image { 
-        position: relative; 
-        width: 100%; 
-        height: 50vh; 
-        order: -1; 
-        border-radius: 0 0 2rem 2rem; 
+    .hero-image {
+        position: relative;
+        width: 100%;
+        height: 50vh;
+        order: -1;
+        border-radius: 0 0 2rem 2rem;
         box-shadow: none;
     }
-    .hero-content { 
-        width: 100%; 
-        max-width: 100%; 
-        padding: 3rem 5% 5rem 5%; 
-        text-align: center; 
+    .hero-content {
+        width: 100%;
+        max-width: 100%;
+        padding: 3rem 5% 5rem 5%;
+        text-align: center;
     }
     .hero-buttons { justify-content: center; }
 
-    /* EFFET SUPERPOSITION FONDATRICE */
+    /* Effet superposition fondatrice */
     .about-summary .split-layout.reverse { gap: 0; }
     .founder-img { height: 350px !important; border-radius: 1.5rem; margin-bottom: 0; }
     .founder-img img { object-position: center top !important; transform: scale(1.05); }
     .about-summary .text-content {
-        margin-top: -60px; /* Le texte remonte sur la photo */
+        margin-top: -60px;
         position: relative;
         z-index: 10;
         background: var(--color-darker);
         padding: 2rem;
         border-radius: 1.5rem;
     }
+
+    .footer-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* Mobiles (Max 768px) */
+/* ==========================================================================
+   MOBILES (Max 768px)
+   ========================================================================== */
 @media (max-width: 768px) {
     h1 { font-size: 2.2rem; }
     h2 { font-size: 1.8rem; }
@@ -55,105 +69,109 @@ html, body {
 
     .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 2rem; }
 
-    /* PRODUITS ACCUEIL : 2 côte à côte sur mobile */
+    /* Grille produits : 2 colonnes */
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    #products-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.8rem !important;
+    }
+
+    /* IMAGE DES CARTES PRODUITS sur mobile */
+    .product-card .img-wrapper,
+    .premium-card .img-wrapper {
+        height: 180px;
+        padding: 8px;
+    }
+
+    /* Textes des cartes */
+    .product-info {
+        padding: 0.8rem 0.6rem 0 !important;
+    }
+    .product-info h3 {
+        font-size: 0.85rem;
+        line-height: 1.2;
+        margin-bottom: 0.2rem;
+    }
+    .product-info p {
+        font-size: 0.78rem;
+        margin-bottom: 0.5rem;
+    }
+    .product-price {
+        font-size: 0.95rem;
+        margin: 0.3rem 0 0.6rem;
+    }
+    .product-info .btn {
+        padding: 7px 10px;
+        font-size: 0.75rem;
+        width: 100%;
+    }
+
+    /* Produits accueil : 2 côte à côte */
     .home-products {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 1rem !important;
     }
     .home-products .premium-card { padding: 1rem; border-radius: 1.5rem; }
     .home-products h3 { font-size: 0.95rem; margin: 0.5rem 0; }
-    .home-products p { display: none; } /* Cache la description pour aérer */
+    .home-products p { display: none; }
     .home-products .btn { padding: 8px; font-size: 0.75rem; border-radius: 0.5rem; width: 100%; }
     .badge-best-seller { font-size: 0.55rem; padding: 3px 8px; top: -8px; }
 
-    /* PAGE BOUTIQUE : 2 colonnes sur mobile */
-    #products-grid {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 0.8rem !important;
-    }
-
+    /* Hero */
     .hero-buttons { flex-direction: column; }
-    
-    /* Menu Mobile Fixé */
+
+    /* Menu mobile */
     .hamburger { display: flex; z-index: 1002; position: relative; }
-    .nav-menu { position: fixed; top: 0; right: -100%; width: 80%; max-width: 300px; height: 100vh; background-color: var(--color-dark); padding-top: 8rem; transition: var(--transition); box-shadow: -5px 0 15px rgba(0,0,0,0.5); z-index: 1001; }
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background-color: var(--color-dark);
+        padding-top: 8rem;
+        transition: var(--transition);
+        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        z-index: 1001;
+    }
     .nav-menu.active { right: 0; }
     .nav-menu ul { flex-direction: column; align-items: center; gap: 2rem; }
     .nav-menu a { color: var(--color-white) !important; font-size: 1.1rem; }
 
-    /* Hamburger Animation */
+    /* Hamburger animation */
     .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .hamburger.active span:nth-child(2) { opacity: 0; }
     .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    
+
     .header .logo { position: relative; z-index: 1002; }
 
-    /* EFFET SUPERPOSITION FONDATRICE (Plus agressif sur téléphone) */
+    /* Fondatrice */
     .founder-img { height: 280px !important; }
     .about-summary .text-content { margin-top: -80px; padding: 1.5rem; }
-}
-/* ==========================================================================
-   CARTES PRODUITS — Tous écrans
-   ========================================================================== */
 
-.product-card {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-}
+    /* Footer */
+    .footer-grid { grid-template-columns: 1fr; text-align: center; }
+    .footer-title::after { left: 50%; transform: translateX(-50%); }
+    .footer-col ul { align-items: center; }
+    .social-links { justify-content: center; }
 
-.product-card .img-wrapper {
-    aspect-ratio: 1 / 1 !important;
-    border-radius: 0 !important;
-    flex-shrink: 0;
-}
-
-.product-info {
-    padding: 1.2rem !important;
-    display: flex !important;
-    flex-direction: column !important;
-    flex-grow: 1 !important;
+    /* WhatsApp */
+    .whatsapp-float { width: 50px; height: 50px; bottom: 20px; right: 20px; }
+    .whatsapp-float i { font-size: 28px; }
 }
 
 /* ==========================================================================
-   SPÉCIAL MOBILE (Max 768px) — Cartes produits
+   PETITS MOBILES (Max 400px)
    ========================================================================== */
-@media (max-width: 768px) {
-    #products-grid {
-        gap: 0.6rem !important;
+@media (max-width: 400px) {
+    .product-card .img-wrapper,
+    .premium-card .img-wrapper {
+        height: 150px;
+        padding: 6px;
     }
-    
-    .product-info {
-        padding: 0.7rem 0.5rem !important;
-    }
-    
-    .product-info h3 {
-        font-size: 0.82rem !important;
-        margin-bottom: 0.2rem !important;
-        line-height: 1.2 !important;
-    }
-    
-   .product-info p {
-    display: block !important;
-    font-size: 0.8rem; /* Taille adaptée pour mobile */
-    margin-bottom: 10px;
-}
-    
-    .product-info .product-price {
-        font-size: 0.95rem !important;
-        margin: 0.3rem 0 !important;
-    }
-    
-    .product-info .btn {
-        padding: 7px 5px !important;
-        font-size: 0.72rem !important;
-        width: 100% !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-    }
+
+    .product-info h3 { font-size: 0.78rem; }
+    .product-info p { display: none; }
+    .product-price { font-size: 0.85rem; }
 }

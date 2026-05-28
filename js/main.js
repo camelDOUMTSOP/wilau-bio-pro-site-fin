@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 9,  image: "7.png", category: "visage", name: "Lotion Pink Sun", desc: "Éclaircissante anti-tache et acné. Lisse la peau claire.", price: "5 000" },
             { id: 10, image: "9.png", category: "visage", name: "Lotion Green Moon", desc: "Anti-tache et acné. Adaptée aux peaux noires et caramel.", price: "5 000" },
             { id: 11, image: "31.png", category: "visage serum", name: "Sérum Potion Magique", desc: "Concentré d'huiles et vitamines contre cernes, rougeurs et ridules (+28 ans).", price: "10 000" },
-            { id: 12, image: "13.JPG", category: "visage", name: "Crème de visage Shine", desc: "Crème de jour révélateur d'éclat pour toutes les carnations naturelles.", price: "10 000" },
+            { id: 12, image: "13.JPG", category: "visage", name: "Crème de visage Shine", desc: "Crème de jour révélateur d'éclat pour toutes les carnations naturelles.", price: "5 000" },
             { id: 13, image: "16.png", category: "visage", name: "Crème de visage Kimmy", desc: "Hydratante, nourrissante et clarifiante pour un teint caramel parfait.", price: "5 000" },
             { id: 14, image: "11.png", category: "visage", name: "Crème de visage Diva", desc: "Soin clarifiant et correcteur d'imperfections.", price: "7 500" },
             { id: 15, image: "15.png", category: "visage", name: "Crème de visage Diamond", desc: "Super éclaircissante, anti-âge au collagène et acide hyaluronique.", price: "7 500" },
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 20, image: "17.png", category: "corps", name: "Lait Diva", desc: "Clarifiant pour un teint clair uniforme sans imperfections.", price: "15 000" },
             { id: 21, image: "22.png", category: "corps", name: "Lait Diamond", desc: "Super éclaircissant et hydratant pour un éclat métissé naturel.", price: "17 500" },
             { id: 22, image: "radiance.jpeg", category: "corps serum", name: "Huile Radiance", desc: "Brillance assurée et protection de l'épiderme contre les agressions.", price: "10 000" },
-            { id: 23, image: "le secret de meme.jpeg", category: "corps", name: "Secret de Mémé", desc: "Crème raffermissante, tonifiante et galbante pour les seins (100% naturel).", price: "15 000" },
+            { id: 23, image: "le secret de meme.jpeg", category: "corps", name: "Secret de Mémé", desc: "Crème raffermissante, tonifiante et galbante pour les seins (100% naturel).", price: "7 500" },
 
             // --- CHEVEUX (5 produits) ---
             { id: 24, image: "1.png", category: "cheveux", name: "Shampooing Faithy", desc: "Antipelliculaire. Lave et assainit le cuir chevelu en profondeur.", price: "7 500" },
@@ -69,11 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 28, image: "serum active pousse faity.jpeg", category: "cheveux", name: "Sérum Active Pousse", desc: "Stimule la croissance des cheveux et de la barbe.", price: "10 000" },
 
             // --- PACKS (5 nouveaux packs) ---
-            { id: 29, image: "gamme shine.jpeg", category: "pack", name: "Pack Shine", desc: "Routine complète pour révéler l'éclat des peaux naturelles.", price: "Promo" },
-            { id: 30, image: "gamme kymy.jpeg", category: "pack", name: "Pack Kimmy", desc: "Le secret du teint caramel parfait en un coffret.", price: "Promo" },
-            { id: 31, image: "gamme diva.jpeg", category: "pack", name: "Pack Diva", desc: "Routine clarifiante intégrale pour un visage et corps sans taches.", price: "Promo" },
-            { id: 32, image: "gamme diamond.jpeg", category: "pack", name: "Pack Diamond", desc: "Luxe suprême pour un éclaircissement intense et anti-âge.", price: "Promo" },
-            { id: 33, image: "gamme fathy.jpeg", category: "pack", name: "Pack Faithy", desc: "Gamme capillaire complète pour la force et la pousse.", price: "Promo" }
+            { id: 29, image: "gamme shine.jpeg", category: "pack", name: "Pack Shine", desc: "Routine complète pour révéler l'éclat des peaux naturelles.", price: "22 500" },
+            { id: 30, image: "gamme kymy.jpeg", category: "pack", name: "Pack Kimmy", desc: "Le secret du teint caramel parfait en un coffret.", price: "25 000" },
+            { id: 31, image: "gamme diva.jpeg", category: "pack", name: "Pack Diva", desc: "Routine clarifiante intégrale pour un visage et corps sans taches.", price: "30 000" },
+            { id: 32, image: "gamme diamond.jpeg", category: "pack", name: "Pack Diamond", desc: "Luxe suprême pour un éclaircissement intense et anti-âge.", price: "32 500" },
+            { id: 33, image: "gamme fathy.jpeg", category: "pack", name: "Pack Faithy", desc: "Gamme capillaire complète pour la force et la pousse.", price: "30 000" }
         ];
 
         function displayProducts(filter = "all") {
@@ -119,19 +119,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // PARTIE TEMOIGNAGES
+   // --- SLIDER INTERACTIF WiLAU BIO (Contrôle par Boutons) ---
     const track = document.getElementById('testimonial-track');
-    if (track) {
-        let slidesHTML = '';
-        const totalImages = 35; 
+    const btnPrev = document.getElementById('prev-testy');
+    const btnNext = document.getElementById('next-testy');
 
+    if (track) {
+        const totalImages = 35;
+        let currentIndex = 0;
+        let slidesHTML = '';
+
+        // Génération des 35 slides
         for (let i = 1; i <= totalImages; i++) {
-            // AJOUT DE /images/ ICI :
             slidesHTML += `
                 <div class="testimonial-slide">
                     <img src="assets/images/testy${i}.jpeg" alt="Témoignage ${i}" loading="lazy">
-                </div>
-            `;
+                </div>`;
         }
-        track.innerHTML = slidesHTML + slidesHTML;
+        track.innerHTML = slidesHTML;
+
+        setTimeout(() => {
+            const slides = document.querySelectorAll('.testimonial-slide');
+            if (slides.length === 0) return;
+
+            function updateSlider() {
+                const slideWidth = slides[0].offsetWidth + 20; // Largeur de la slide + gap
+                track.style.transform = `translateX(${-currentIndex * slideWidth}px)`;
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % totalImages; // Boucle à la fin
+                updateSlider();
+            }
+
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + totalImages) % totalImages; // Boucle au début
+                updateSlider();
+            }
+
+            // Écouteurs d'événements sur les boutons fléchés
+            if (btnNext) btnNext.addEventListener('click', nextSlide);
+            if (btnPrev) btnPrev.addEventListener('click', prevSlide);
+
+            // Optionnel : On garde quand même le swipe au doigt sur mobile car c'est instinctif
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            track.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            track.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                const swipeThreshold = 50;
+                if (touchStartX - touchEndX > swipeThreshold) nextSlide();
+                if (touchEndX - touchStartX > swipeThreshold) prevSlide();
+            }, { passive: true });
+
+            window.addEventListener('resize', updateSlider);
+        }, 500);
     }
 });

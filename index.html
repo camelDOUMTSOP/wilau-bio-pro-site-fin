@@ -85,7 +85,7 @@
                 
                 <div class="premium-card best-seller">
                     <span class="badge-best-seller">Best-Seller</span>
-                    <div class="img-wrapper aspect-square">
+                    <div class="img-wrapper">
                         <img src="assets/images/31.png" alt="portion magique"> 
                     </div>
                     <h3>Portion Magique</h3>
@@ -111,7 +111,9 @@
         </div>
     </section>
 
-    <section class="testimonials bg-dark text-light section-padding reveal">
+</section>
+
+<section class="testimonials bg-dark text-light section-padding reveal">
     <div class="container">
         <div class="section-header center">
             <span class="accent-font gold-text">Leurs Retours</span>
@@ -119,16 +121,22 @@
             <p>Découvrez les échanges réels avec nos clientes satisfaites.</p>
         </div>
         
-        <div class="testimonial-slider">
-            <div class="testimonial-track" id="testimonial-track">
-                </div>
+        <div class="testimonial-slider-container">
+            <button id="prev-testy" class="slider-arrow prev" aria-label="Précédent">&#10094;</button>
+            
+            <div class="testimonial-slider">
+                <div class="testimonial-track" id="testimonial-track">
+                    </div>
+            </div>
+            
+            <button id="next-testy" class="slider-arrow next" aria-label="Suivant">&#10095;</button>
         </div>
         
         <div class="center mt-3">
-            <p class="small gold-text">Glissez pour voir plus de résultats →</p>
+            <p class="small gold-text">Cliquez sur les flèches ou glissez pour voir plus de résultats</p>
         </div>
     </div>
-</section>
+</section>              
 
     <section class="cta-section text-light section-padding reveal">
         <div class="container center">
@@ -157,7 +165,7 @@
             </div>
             <div class="grid-3">
                 <article class="blog-card" style="background: rgba(255,255,255,0.05);">
-                    <div class="img-wrapper aspect-landscape" style="border-radius: 0;">
+                    <div class="img-wrapper" style="border-radius: 0;">
                         <img src="assets/images/wilau img 8.jpg" alt="Soins visage">
                     </div>
                     <div class="blog-info" style="padding: 1.5rem;">

@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Beauté | Wilau Bio</title>
-   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-   <link rel="stylesheet" href="css/responsive.css">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body class="bg-cream">
     <header class="header" id="header">
         <div class="container nav-container">
-       <a href="index.html" class="logo-wrapper">
-    <img src="assets/logos/logo wilau.jpg" alt="Logo WiLAU BIO" style="height: 48px; width: auto; object-fit: contain;">
-    <div class="logo-text">
-        <span class="logo-title">WiLAU BIO</span>
-        <span class="logo-subtitle">Cosmétique</span>
-    </div>
-</a>
+            <a href="index.html" class="logo-wrapper">
+                <img src="assets/logos/logo wilau.jpg" alt="Logo WiLAU BIO" style="height: 48px; width: auto; object-fit: contain;">
+                <div class="logo-text">
+                    <span class="logo-title">WiLAU BIO</span>
+                    <span class="logo-subtitle">Cosmétique</span>
+                </div>
+            </a>
             <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
             <nav class="nav-menu" id="nav-menu">
                 <ul>
@@ -40,39 +40,12 @@
 
     <section class="blog-grid section-padding reveal">
         <div class="container">
-            <div class="grid-3">
-                <article class="blog-card full-shadow">
-                    <div class="img-wrapper aspect-landscape">
-                        <img src="assets/images/wilau img 8.jpg" alt="Soins visage">
-                    </div>
-                    <div class="blog-info p-2">
-                        <h3>Comment hydrater sa peau en saison sèche ?</h3>
-                        <p>Découvrez notre routine adaptée pour garder une peau souple et lumineuse face au climat local du Cameroun.</p>
-                        <a href="article-hydratation.html" class="btn btn-outline small mt-1">Lire l'article</a>
-                    </div>
-                </article>
-
-                <article class="blog-card full-shadow">
-                    <div class="img-wrapper aspect-landscape">
-                        <img src="assets/images/wilau skincare.jpg" alt="Ingrédients naturels">
-                    </div>
-                    <div class="blog-info p-2">
-                        <h3>Les secrets du beurre de cacao pur</h3>
-                        <p>Pourquoi cet ingrédient ancestral est l'allié numéro un des peaux foncées pour lutter contre la sécheresse.</p>
-                        <a href="article-cacao.html" class="btn btn-outline small mt-1">Lire l'article</a>
-                    </div>
-                </article>
-
-                <article class="blog-card full-shadow">
-                    <div class="img-wrapper aspect-landscape">
-                        <img src="assets/images/wilau conseil.jpg" alt="Soins des cheveux">
-                    </div>
-                    <div class="blog-info p-2">
-                        <h3>L'importance de l'exfoliation douce</h3>
-                        <p>Renouveler les cellules de la peau sans l'agresser : les erreurs à éviter pour un teint parfaitement unifié.</p>
-                        <a href="article-exfoliation.html" class="btn btn-outline small mt-1">Lire l'article</a>
-                    </div>
-                </article>
+            
+            <div id="blog-grid" class="grid-3">
+                <div class="loading-blog center" style="grid-column: 1/-1; color: #6b7280; text-align: center; padding: 2rem 0;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--color-gold); margin-bottom: 10px;"></i>
+                    <p>Chargement des secrets de beauté...</p>
+                </div>
             </div>
             
             <div class="cta-blog mt-3 center p-3 bg-dark text-light border-gold">
@@ -83,33 +56,28 @@
         </div>
     </section>
 
-   <footer class="footer bg-dark">
+    <footer class="footer bg-dark">
         <div class="container center text-light">
             <h2 class="gold-text">Wilau Bio</h2>
-            
             <div class="social-links">
                 <a href="https://www.facebook.com/share/1AywynfpGF/" target="_blank" aria-label="Facebook de Wilau Bio">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                
                 <a href="https://www.instagram.com/wilau_bio?igsh=MTlrMHpuNmMzYnd6bw==" target="_blank" aria-label="Instagram de Wilau Bio">
                     <i class="fab fa-instagram"></i>
                 </a>
-                
                 <a href="https://www.tiktok.com/@wilau_mama?_r=1&_t=ZS-96MEjpm3Xqa" target="_blank" aria-label="TikTok de Wilau Bio">
                     <i class="fab fa-tiktok"></i>
                 </a>
             </div>
-
             <p>© 2026 Wilau Bio. Tous droits réservés.</p>
         </div>
     </footer>
-      <a href="https://wa.me/237699430350?text=Bonjour%20Wilau%20Bio,%20j'ai%20une%20question%20depuis%20votre%20site%20web."
-   class="whatsapp-float"
-   target="_blank"
-   aria-label="Contacter sur WhatsApp">
-   <i class="fab fa-whatsapp"></i>
-</a>
+
+    <a href="https://wa.me/237699430350?text=Bonjour%20Wilau%20Bio,%20j'ai%20une%20question%20depuis%20votre%20site%20web." class="whatsapp-float" target="_blank" aria-label="Contacter sur WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <script src="js/main.js"></script>
 </body>
 </html>

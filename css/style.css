@@ -171,7 +171,7 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
    ========================================================================== */
 .product-card, .blog-card.full-shadow {
     background: var(--color-white);
-    padding-bottom: 1.5rem;
+    padding-bottom: 1rem;
     text-align: center;
     box-shadow: var(--shadow-soft);
     transition: var(--transition);
@@ -185,7 +185,6 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
     box-shadow: var(--shadow-strong);
 }
 
-/* Annule l'arrondi sur l'image pour une intégration parfaite */
 .product-card .img-wrapper,
 .blog-card.full-shadow .img-wrapper {
     border-radius: 0;
@@ -199,9 +198,6 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
     flex-grow: 1;
 }
 
-/* ==========================================================================
-   CARTES PRODUITS — IMAGE (BLOC UNIQUE — NE PAS DUPLIQUER)
-   ========================================================================== */
 .product-card .img-wrapper,
 .premium-card .img-wrapper {
     height: auto !important;
@@ -218,7 +214,7 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
 .premium-card .img-wrapper img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: contain;   /* flacon entier, jamais coupé */
+    object-fit: contain;   /* Flacon entier sur PC */
     transition: transform 0.4s ease;
 }
 
@@ -228,13 +224,30 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
 }
 
 /* ==========================================================================
-   PRIX & CATÉGORIE
+   DESCRIPTIONS, PRIX & CATÉGORIES (PC)
    ========================================================================== */
-.product-price { font-size: 1.2rem; font-weight: 700; color: var(--color-gold); margin: 0.5rem 0 1rem; }
+.product-description {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+    font-size: 0.78rem; 
+    line-height: 1.3;
+    color: #6b7280;
+    margin: 4px 0 6px 0;
+    text-align: center;
+}
+
+.product-price { 
+    font-size: 1.2rem; 
+    font-weight: 700; 
+    color: var(--color-gold); 
+    margin: 0.2rem 0 0.8rem;      
+}
+
 .product-category { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; display: block; margin-bottom: 0.5rem; }
 
 /* ==========================================================================
-   GRILLE CATALOGUE
+   GRILLES ET FILTRES
    ========================================================================== */
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
 
@@ -251,7 +264,6 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
     min-width: 0;
 }
 
-/* Filtres boutique */
 .filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
 .filter-btn {
     background: transparent;
@@ -269,7 +281,7 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
 }
 
 /* ==========================================================================
-   PREMIUM CARDS (ACCUEIL)
+   PREMIUM CARDS (ACCUEIL BEST-SELLERS PC)
    ========================================================================== */
 .premium-card {
     background: var(--color-white);
@@ -304,49 +316,89 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
     z-index: 10;
 }
 .premium-card h3 { color: var(--color-gold); text-transform: uppercase; font-size: 1.5rem; margin: 1.5rem 0 0.5rem; letter-spacing: -0.5px; }
-.premium-card p { font-size: 0.9rem; color: #6b7280; margin-bottom: 1.5rem; flex-grow: 1; }
-.premium-card .img-wrapper { border-radius: 1.5rem; }
+
+/* Correction Accueil PC : Calibrage propre des 2 cartes best-sellers */
+.home-products .premium-card {
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+.home-products .premium-card .img-wrapper {
+    height: 320px !important;
+    aspect-ratio: unset !important;
+    background: linear-gradient(135deg, #f9f9f9, #ffffff);
+}
+.home-products .premium-card .img-wrapper img {
+    object-fit: contain !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+.premium-card .desc-mobile-hide {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+    color: #4b5563 !important;
+    margin: 0.8rem 0 !important;
+    display: block !important;
+    overflow: visible !important;
+    text-align: center;
+    flex-grow: 1;
+}
 
 /* ==========================================================================
-   TESTIMONIALS SLIDER
+   SECTION TEMOIGNAGES PC (RÉDUCTION DE LA ZONE NOIRE)
    ========================================================================== */
+.testimonials {
+    padding: 4rem 0 !important; /* Resserre la section noire verticalement */
+}
+
+@media (min-width: 993px) {
+    .testimonials .container {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr; /* Texte à gauche, smartphone à droite */
+        align-items: center;
+        gap: 4rem;
+    }
+    .testimonials .section-header {
+        text-align: left;
+        margin-bottom: 0;
+    }
+}
+
 .testimonial-slider-container {
     position: relative;
     width: 100%;
-    max-width: 360px;
+    max-width: 320px;
     margin: 0 auto;
     display: flex;
     align-items: center;
 }
 .testimonial-slider {
-    width: calc(100% - 60px);
-    max-width: 320px;
-    margin: 0 auto;
+    width: 100%;
     overflow: hidden;
     position: relative;
     cursor: pointer;
-    min-height: 450px;
 }
 .testimonial-track {
     display: flex;
-    gap: 20px;
+    gap: 0px !important; /* Rapprochement parfait */
     transition: transform 0.7s cubic-bezier(0.45, 0, 0.55, 1);
     will-change: transform;
 }
 .testimonial-slide { width: 100%; flex-shrink: 0; }
 .testimonial-slide img {
     width: 100%;
-    height: auto;
+    height: 480px !important;
+    object-fit: contain !important; /* Discussion entière sans découpe */
     border-radius: 20px;
-    border: 4px solid #222;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    border: 3px solid var(--color-gold);
+    box-shadow: var(--shadow-strong);
     pointer-events: none;
 }
 .slider-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(243, 146, 0, 0.85);
+    background: rgba(243, 146, 0, 0.9);
     color: white;
     border: none;
     width: 35px;
@@ -362,27 +414,11 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
     transition: all 0.3s ease;
 }
 .slider-arrow:hover { background: var(--color-gold); transform: translateY(-50%) scale(1.1); }
-.slider-arrow.prev { left: -10px; }
-.slider-arrow.next { right: -10px; }
+.slider-arrow.prev { left: -45px; }
+.slider-arrow.next { right: -45px; }
 
 /* ==========================================================================
-   TESTIMONIAL CARDS (AVIS)
-   ========================================================================== */
-.testimonial-card {
-    padding: 2.5rem;
-    background: var(--color-white);
-    border-radius: 1.5rem;
-    box-shadow: var(--shadow-soft);
-    position: relative;
-    border: none;
-}
-.testimonial-card.with-img { padding: 0; border: none; background: transparent; box-shadow: none; }
-.quote-icon { font-size: 4rem; font-family: var(--font-heading); line-height: 0; position: absolute; top: 40px; left: 20px; opacity: 0.15; color: var(--color-gold); }
-.client-info h4 { margin-top: 1.5rem; font-size: 1rem; color: var(--color-gold); }
-.client-info span { font-size: 0.8rem; font-style: normal; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; }
-
-/* ==========================================================================
-   VALUE CARDS
+   AUTRES SECTIONS ET FORMULAIRES
    ========================================================================== */
 .value-card {
     background: rgba(255, 255, 255, 0.05);
@@ -393,9 +429,6 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
 }
 .value-card:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-10px); }
 
-/* ==========================================================================
-   CTA SECTION
-   ========================================================================== */
 .cta-section {
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("assets/images/wilau img 1.jpg");
     background-attachment: fixed;
@@ -407,44 +440,11 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
 }
 .cta-section p { color: #ffffff !important; }
 
-/* ==========================================================================
-   PAGE BANNER — NOTRE HISTOIRE
-   ========================================================================== */
-.notre-histoire { color: var(--color-white); }
-.notre-histoire h1 { color: var(--color-white); }
-.notre-histoire p { color: var(--color-white); }
-
-.page-banner {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 50vh;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    text-align: center;
-}
-.page-banner::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6));
-    z-index: 1;
-}
-.page-banner .container { position: relative; z-index: 2; }
-
-/* ==========================================================================
-   FORMULAIRE
-   ========================================================================== */
 .premium-form .form-group { margin-bottom: 1.5rem; text-align: left; }
 .premium-form label { display: block; margin-bottom: 0.5rem; font-family: var(--font-heading); font-size: 1rem; font-weight: 600; color: var(--color-dark); }
 .premium-form input, .premium-form select, .premium-form textarea { width: 100%; padding: 15px 20px; border: 1px solid #e5e7eb; border-radius: 1rem; background: #f9fafb; font-family: var(--font-body); transition: var(--transition); }
 .premium-form input:focus, .premium-form textarea:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(243, 146, 0, 0.2); outline: none; background: var(--color-white); }
 
-/* ==========================================================================
-   FOOTER PRO
-   ========================================================================== */
 .footer { padding: 3rem 0; border-top: 1px solid rgba(255,255,255,0.1); }
 .footer-pro { padding: 5rem 0 0 0; background-color: var(--color-darker); }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1.5fr 1.5fr; gap: 3rem; margin-bottom: 3rem; }
@@ -459,9 +459,6 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
 .newsletter-form button { padding: 12px 20px; border: none; border-radius: 0 5px 5px 0; background-color: var(--color-gold); color: #fff; cursor: pointer; }
 .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 1.5rem 0; background-color: #111; color: #6b7280; font-size: 0.8rem; text-align: center; }
 
-/* ==========================================================================
-   RÉSEAUX SOCIAUX (FOOTER)
-   ========================================================================== */
 .social-links { display: flex; justify-content: center; gap: 1.5rem; margin: 1.5rem 0; }
 .social-links a {
     color: var(--color-white);
@@ -477,9 +474,6 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
 }
 .social-links a:hover { color: var(--color-dark); background-color: var(--color-gold); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(243, 146, 0, 0.4); }
 
-/* ==========================================================================
-   WHATSAPP BOUTON FLOTTANT
-   ========================================================================== */
 .whatsapp-float {
     position: fixed;
     width: 60px;
@@ -506,78 +500,87 @@ body:not(.bg-cream) .header:not(.scrolled) .logo, body:not(.bg-cream) .header:no
     100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }
 
-/* ==========================================================================
-   ANIMATIONS
-   ========================================================================== */
 .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-.reveal.active { opacity: 1; transform: translateY(0); }
-/* ==========================================================================
-   STYLE DE LA DESCRIPTION DIRECTE DES CARTES
+.reveal.active { opacity: 1; transform: translateY(0); }/* ==========================================================================
+   SECTION TEMOIGNAGES PC (RECADRAGE ET ALIGNEMENT PARFAIT)
    ========================================================================== */
-.product-description {
-    font-size: 0.85rem;
-    line-height: 1.4;
-    color: #6b7280;
-    margin: 0.5rem 0;
-    
-    /* Force l'alignement sur max 2 lignes et ajoute les "..." si ça déborde */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    
-    /* Assure une hauteur fixe minimale pour que toutes les cartes fassent la même taille */
-    min-height: 2.4rem; 
-    text-align: center;
-}.product-description {
-    font-size: 0.75rem;          /* MODIFICATION : On diminue la police sur PC */
-    line-height: 1.4;
-    color: #6b7280;
-    margin: 0.5rem 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    
-    /* MODIFICATION : Hauteur minimale ajustée pour la nouvelle taille de police */
-    min-height: 2.1rem;          
-    text-align: center;
-}.product-description {
-    font-size: 0.75rem;
-    line-height: 1.4;
-    color: #6b7280;
-    /* MODIFICATION : 0.4rem en haut, et seulement 0.1rem (presque rien) en bas */
-    margin: 0.4rem 0 0.1rem 0; 
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    min-height: 2.1rem;          
-    text-align: center;
+.testimonials {
+    padding: 4rem 0 !important; 
 }
 
-/* AJOUT : On réduit aussi le vide tout en bas de la carte sur PC */
-.product-card {
-    padding-bottom: 1rem !important; 
-}.product-description {
-    font-size: 0.75rem;          
-    line-height: 1.4;
-    color: #6b7280;
-    margin: 0.3rem 0;             /* On réduit la marge externe */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    
-    /* MODIFICATION : On baisse à 2.1rem pour que le prix remonte juste en dessous */
-    min-height: 2.1rem;          
-    text-align: center;
+@media (min-width: 993px) {
+    .testimonials .container {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr; /* Texte à gauche, slider à droite */
+        align-items: center;
+        gap: 4rem;
+    }
+    .testimonials .section-header {
+        text-align: left;
+        margin-bottom: 0;
+    }
 }
 
-/* MODIFICATION : On ajuste la marge du prix pour le rapprocher du texte */
-.product-price { 
-    font-size: 1.2rem; 
-    font-weight: 700; 
-    color: var(--color-gold); 
-    margin: 0.2rem 0 0.8rem;      /* Moins d'espace en haut et en bas du prix */
+/* Conteneur principal fixe pour bloquer la vue sur PC */
+.testimonial-slider-container {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 300px !important; /* Force la largeur de la fenêtre visible sur PC */
+    margin: 0 auto !important;
+    display: flex;
+    align-items: center;
 }
+
+.testimonial-slider {
+    width: 100% !important;
+    max-width: 300px !important; /* Fenêtre d'affichage stricte */
+    overflow: hidden !important; /* Coupe absolument tout ce qui déborde */
+    position: relative;
+}
+
+.testimonial-track {
+    display: flex !important;
+    gap: 20px !important; /* Reste synchronisé avec le (+ 20) du fichier main.js */
+}
+
+/* Redimensionnement strict de chaque slide sur PC */
+.testimonial-slide { 
+    width: 300px !important; /* Largeur fixe incontournable pour le calcul JS */
+    min-width: 300px !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+}
+
+.testimonial-slide img {
+    width: 100% !important;
+    height: 520px !important; /* Hauteur premium et ultra lisible sur PC */
+    object-fit: contain !important; /* Conserve l'intégralité du texte WhatsApp sans coupure */
+    border-radius: 20px;
+    border: 3px solid var(--color-gold);
+    box-shadow: var(--shadow-strong);
+    pointer-events: none;
+}
+
+/* Positionnement parfait des flèches à l'extérieur du bloc sur PC */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(243, 146, 0, 0.9);
+    color: white;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+.slider-arrow:hover { background: var(--color-gold); transform: translateY(-50%) scale(1.1); }
+.slider-arrow.prev { left: -55px !important; }
+.slider-arrow.next { right: -55px !important; }

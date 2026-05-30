@@ -82,28 +82,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? productsData 
                 : productsData.filter(p => p.category.split(' ').includes(filter));
 
-          filtered.forEach(p => {
-    const labelMap = { visage: "Visage", corps: "Corps", cheveux: "Cheveux", pack: "Pack" };
-    const categoryLabel = labelMap[p.category.split(' ')[0]] || p.category.split(' ')[0];
+            filtered.forEach(p => {
+            const labelMap = { visage: "Visage", corps: "Corps", cheveux: "Cheveux", pack: "Pack" };
+            const categoryLabel = labelMap[p.category.split(' ')[0]] || p.category.split(' ')[0];
 
-    const card = document.createElement('div');
-    card.className = "product-card reveal active"; 
-    card.innerHTML = `
-        <div class="img-wrapper">
-            <img src="assets/images/${p.image}" alt="${p.name}" loading="lazy">
-        </div>
-        <div class="product-info">
-            <span class="product-category">${categoryLabel}</span>
-            <h3>${p.name}</h3>
-            <p>${p.desc}</p>
-            <div class="product-price">${p.price === 'Promo' ? '<span style="color:var(--color-gold);">Offre Spéciale</span>' : p.price + ' FCFA'}</div>
-            
-            <a href="https://wa.me/237699430350?text=Bonjour%20WiLAU%20BIO%20%E2%9C%A8%2C%20j'ai%20d%C3%A9couvert%20votre%20boutique%20en%20ligne%20et%20je%20souhaiterais%20commander%20le%20produit%20suivant%20%3A%20*${encodeURIComponent(p.name)}*.%20Est-il%20disponible%20%3F" 
-               class="btn btn-primary small" 
-               target="_blank">Commander</a>
-        </div>`; // J'ai supprimé la ligne en trop ici
-    productsGrid.appendChild(card);
-});
+            const card = document.createElement('div');
+            card.className = "product-card reveal active"; 
+            card.innerHTML = `
+                <div class="img-wrapper">
+                    <img src="assets/images/${p.image}" alt="${p.name}" loading="lazy">
+                </div>
+                <div class="product-info">
+                    <span class="product-category">${categoryLabel}</span>
+                    <h3>${p.name}</h3>
+                    
+                    <p class="product-description">${p.desc}</p>
+                    
+                    <div class="product-price">${p.price === 'Promo' ? '<span style="color:var(--color-gold);">Offre Spéciale</span>' : p.price + ' FCFA'}</div>
+                    
+                    <a href="https://wa.me/237699430350?text=Bonjour%20WiLAU%20BIO%20%E2%9C%A8%2C%20j'ai%20d%C3%A9couvert%20votre%20boutique%20en%20ligne%20et%20je%20souhaiterais%20commander%20le%20produit%20suivant%20%3A%20*${encodeURIComponent(p.name)}*.%20Est-il%20disponible%20%3F" 
+                       class="btn btn-primary small" 
+                       target="_blank">Commander</a>
+                </div>`;
+            productsGrid.appendChild(card);
+        });
         }
 
         // Activation des filtres
@@ -119,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // PARTIE TEMOIGNAGES
-   // --- SLIDER INTERACTIF WiLAU BIO (Contrôle par Boutons) ---
+    // --- SLIDER INTERACTIF WiLAU BIO (Contrôle par Boutons) ---
     const track = document.getElementById('testimonial-track');
     const btnPrev = document.getElementById('prev-testy');
     const btnNext = document.getElementById('next-testy');
@@ -130,10 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let slidesHTML = '';
 
         // Génération des 35 slides
+       // Génération des 35 slides avec sécurité anti-trou noir
         for (let i = 1; i <= totalImages; i++) {
             slidesHTML += `
                 <div class="testimonial-slide">
-                    <img src="assets/images/testy${i}.jpeg" alt="Témoignage ${i}" loading="lazy">
+                    <img src="assets/images/testy${i}.jpeg" alt="Témoignage ${i}" loading="lazy" onerror="this.parentElement.style.display='none';">
                 </div>`;
         }
         track.innerHTML = slidesHTML;
@@ -180,3 +183,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }
 });
+
+// ==========================================================================
+// 5. FONCTION GLOBALE POUR COLLAPSE/EXPAND (Masquer / Afficher la description)
+// ==========================================================================
+function toggleDescription(button) {
+    const descriptionElement = button.nextElementSibling;
+    const icon = button.querySelector('i');
+    
+    if (descriptionElement.style.display === 'none' || descriptionElement.style.maxHeight === '0px') {
+        descriptionElement.style.display = 'block';
+        setTimeout(() => {
+            descriptionElement.style.maxHeight = '200px'; 
+            descriptionElement.style.opacity = '1';
+        }, 10);
+        button.innerHTML = 'Masquer la description <i class="fas fa-chevron-up" style="font-size:0.65rem;"></i>';
+    } else {
+        descriptionElement.style.maxHeight = '0px';
+        descriptionElement.style.opacity = '0';
+        setTimeout(() => {
+            descriptionElement.style.display = 'none';
+        }, 300);
+        button.innerHTML = 'Voir la description <i class="fas fa-chevron-down" style="font-size:0.65rem;"></i>';
+    }
+}

@@ -182,28 +182,79 @@ document.addEventListener('DOMContentLoaded', () => {
             window.addEventListener('resize', updateSlider);
         }, 500);
     }
+    // ==========================================================================
+    // MOTEUR DYNAMIQUE DU BLOG (CONNEXION CMS VIA API GITHUB)
+    // ==========================================================================
+    const blogGrid = document.getElementById('blog-grid');
+    
+    if (blogGrid) {
+        // Tes identifiants réels synchronisés avec ton dépôt
+        const repoOwner = "camelDOUMTSOP"; 
+        const repoName = "wilau-bio-pro-site-fin";
+        const folderPath = "content/blog";
+        const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}?ref=master`;
+
+        async function initBlog() {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    console.log("Dossier distant non encore créé ou vide sur GitHub. Affichage des articles par défaut.");
+                    return; // Si le dossier n'existe pas encore en ligne, on s'arrête sans bloquer l'écran
+                }
+                const files = await response.json();
+                
+                // On filtre pour ne récupérer que les fichiers d'articles (.md)
+                const mdFiles = files.filter(file => file.name.endsWith('.md'));
+
+                // Si la cliente a publié au moins un vrai article sur le CMS
+                if (mdFiles.length > 0) {
+                    blogGrid.innerHTML = ""; // On efface proprement les 3 articles de base du HTML
+
+                    // On boucle sur chaque fichier trouvé sur GitHub pour lire son contenu
+                    for (const file of mdFiles) {
+                        const fileResponse = await fetch(file.download_url);
+                        const rawText = await fileResponse.text();
+                        
+                        // Découpage des infos de l'article (Titre, Image, Description)
+                        const parsedData = parseMarkdownFrontmatter(rawText);
+                        
+                        // Injection de la nouvelle carte d'article dynamique
+                        const blogCard = document.createElement('article');
+                        blogCard.className = "blog-card full-shadow";
+                        blogCard.innerHTML = `
+                            <div class="img-wrapper aspect-landscape">
+                                <img src="${parsedData.image || 'assets/images/wilau img 8.jpg'}" alt="${parsedData.title}">
+                            </div>
+                            <div class="blog-info p-2">
+                                <h3>${parsedData.title}</h3>
+                                <p>${parsedData.description || ''}</p>
+                                <a href="article.html?file=${file.name}" class="btn btn-outline small mt-1">Lire l'article</a>
+                            </div>`;
+                        blogGrid.appendChild(blogCard);
+                    }
+                }
+            } catch (error) {
+                console.error("Erreur de liaison avec l'API GitHub, conservation du contenu HTML :", error);
+            }
+        }
+
+        // Fonction magique pour lire les variables (Frontmatter) du fichier Markdown
+        function parseMarkdownFrontmatter(text) {
+            const data = {};
+            const matches = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+            if (matches) {
+                const lines = matches[1].split('\n');
+                lines.forEach(line => {
+                    const parts = line.split(':');
+                    if (parts.length >= 2) {
+                        data[parts[0].trim()] = parts.slice(1).join(':').trim().replace(/^["']|["']$/g, '');
+                    }
+                });
+            }
+            return data;
+        }
+
+        initBlog();
+    }
 });
 
-// ==========================================================================
-// 5. FONCTION GLOBALE POUR COLLAPSE/EXPAND (Masquer / Afficher la description)
-// ==========================================================================
-function toggleDescription(button) {
-    const descriptionElement = button.nextElementSibling;
-    const icon = button.querySelector('i');
-    
-    if (descriptionElement.style.display === 'none' || descriptionElement.style.maxHeight === '0px') {
-        descriptionElement.style.display = 'block';
-        setTimeout(() => {
-            descriptionElement.style.maxHeight = '200px'; 
-            descriptionElement.style.opacity = '1';
-        }, 10);
-        button.innerHTML = 'Masquer la description <i class="fas fa-chevron-up" style="font-size:0.65rem;"></i>';
-    } else {
-        descriptionElement.style.maxHeight = '0px';
-        descriptionElement.style.opacity = '0';
-        setTimeout(() => {
-            descriptionElement.style.display = 'none';
-        }, 300);
-        button.innerHTML = 'Voir la description <i class="fas fa-chevron-down" style="font-size:0.65rem;"></i>';
-    }
-}

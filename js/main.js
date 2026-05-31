@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const repoOwner = "camelDOUMTSOP"; 
         const repoName = "wilau-bio-pro-site-fin";
         const folderPath = "content/blog";
-        const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}?ref=master`;
+        const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}?ref=main`;
 
         async function initBlog() {
             try {
@@ -270,8 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const repoOwner = "camelDOUMTSOP"; 
             const repoName = "wilau-bio-pro-site-fin";
-            const articleUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/content/blog/${fileName}?ref=master`;
-
+            const articleUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/content/blog/${fileName}?ref=main`;
             async function loadArticle() {
                 try {
                     const response = await fetch(articleUrl);

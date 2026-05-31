@@ -279,8 +279,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!response.ok) throw new Error("Article introuvable");
                     const fileData = await response.json();
                     
-                    // Décodage du texte de l'article
-                    const rawText = decodeURIComponent(escape(atob(fileData.content)));
+                    // Décodage UTF-8 propre et sécurisé sans déclencher les alertes de sécurité
+const binaryString = atob(fileData.content.replace(/\s/g, ''));
+const bytes = new Uint8Array(binaryString.length);
+for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+}
+const rawText = new TextDecoder('utf-8').decode(bytes);
                     
                     // Séparation du Frontmatter YAML et du corps du texte
                     const matches = rawText.match(/^---\r?\n([\s\S]*?)\r?\n---([\s\S]*)$/);

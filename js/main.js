@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="blog-info p-2">
                                 <h3>${parsedData.title}</h3>
                                 <p>${parsedData.description || ''}</p>
-                                <a href="article.html?file=${file.name}" class="btn btn-outline small mt-1">Lire l'article</a>
+                            <a href="article.html?file=${encodeURIComponent(file.name)}" class="btn btn-outline small mt-1">Lire l'article</a>
                             </div>`;
                         blogGrid.appendChild(blogCard);
                     }
@@ -263,8 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const repoOwner = "camelDOUMTSOP"; 
             const repoName = "wilau-bio-pro-site-fin";
-            const articleUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/content/blog/${fileName}?ref=main`;
-
+            const articleUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/content/blog/${encodeURIComponent(fileName)}?ref=main`;
             async function loadArticle() {
                 try {
                     const response = await fetch(articleUrl);

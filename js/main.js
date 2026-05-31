@@ -256,5 +256,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
         initBlog();
     }
+    // ==========================================================================
+    // LECTEUR DYNAMIQUE D'ARTICLE UNIQUE
+    // ==========================================================================
+    const articleContent = document.getElementById('article-content');
+    
+    if (articleContent) {
+        // On récupère le nom du fichier dans l'URL (ex: ?file=mon-article.md)
+        const urlParams = new URLSearchParams(window.location.search);
+        const fileName = urlParams.get('file');
+
+        if (!fileName) {
+            articleContent.innerHTML = "<p class='center'>Article introuvable.</p>";
+        } else {
+            const repoOwner = "camelDOUMTSOP"; 
+            const repoName = "wilau-bio-pro-site-fin";
+            const articleUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/content/blog/${fileName}?ref=master`;
+
+            async function loadArticle() {
+                try {
+                    const response = await fetch(articleUrl);
+                    if (!response.ok) throw new Error("Article introuvable");
+                    const fileData = await response.json();
+                    
+                    // Décodage du texte de l'article
+                    const rawText = decodeURIComponent(escape(atob(fileData.content)));
+                    
+                    // Séparation du Frontmatter YAML et du corps du texte
+                    const matches = rawText.match(/^---\r?\n([\s\S]*?)\r?\n---([\s\S]*)$/);
+                    let title = "Article";
+                    let image = "";
+                    let bodyHtml = rawText;
+
+                    if (matches) {
+                        const metadata = matches[1];
+                        bodyHtml = matches[2];
+
+                        metadata.split('\n').forEach(line => {
+                            const parts = line.split(':');
+                            if (parts.length >= 2) {
+                                const key = parts[0].trim();
+                                const val = parts.slice(1).join(':').trim().replace(/^["']|["']$/g, '');
+                                if (key === 'title') title = val;
+                                if (key === 'image') image = val;
+                            }
+                        });
+                    }
+
+                    // Transformation rapide des balises Markdown (### et **) en HTML propre
+                    let cleanBody = bodyHtml
+                        .replace(/^### (.*$)/gim, '<h3 style="margin:25px 0 15px 0; color:var(--color-dark); font-size:1.4rem;">$1</h3>')
+                        .replace(/\*\*(.*)\*\*/gim, '<strong style="color:var(--color-dark);">$1</strong>')
+                        .replace(/\n/g, '<br>');
+
+                    // Affichage final de l'article pro
+                    articleContent.innerHTML = `
+                        <h1 style="font-size: 2.2rem; font-family: 'Playfair Display', serif; margin-bottom: 15px; color: var(--color-dark);">${title}</h1>
+                        <span style="color: var(--color-gold); font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 25px;">PAR WILAU MAGAZINE • CONSEIL BEAUTÉ</span>
+                        ${image ? `<img src="${image}" alt="${title}" style="width:100%; max-height:400px; object-fit:cover; border-radius:8px; margin-bottom:30px; box-shadow: var(--shadow-light); collapse;">` : ''}
+                        <div style="font-size: 1.05rem; line-height: 1.8; color: #374151; font-family: 'Montserrat', sans-serif;">
+                            ${cleanBody}
+                        </div>
+                    `;
+                } catch (error) {
+                    console.error(error);
+                    articleContent.innerHTML = "<p class='center' style='color:red;'>Erreur lors du chargement de l'article.</p>";
+                }
+            }
+            loadArticle();
+        }
+    }
 });
 

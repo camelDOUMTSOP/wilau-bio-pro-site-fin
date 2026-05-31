@@ -183,12 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }
     // ==========================================================================
+    // ==========================================================================
     // MOTEUR DYNAMIQUE DU BLOG (CONNEXION CMS VIA API GITHUB)
     // ==========================================================================
     const blogGrid = document.getElementById('blog-grid');
     
     if (blogGrid) {
-        // Tes identifiants réels synchronisés avec ton dépôt
         const repoOwner = "camelDOUMTSOP"; 
         const repoName = "wilau-bio-pro-site-fin";
         const folderPath = "content/blog";
@@ -198,27 +198,20 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch(apiUrl);
                 if (!response.ok) {
-                    console.log("Dossier distant non encore créé ou vide sur GitHub. Affichage des articles par défaut.");
-                    return; // Si le dossier n'existe pas encore en ligne, on s'arrête sans bloquer l'écran
+                    console.log("Dossier distant vide ou introuvable. Conservation des articles HTML.");
+                    return;
                 }
                 const files = await response.json();
-                
-                // On filtre pour ne récupérer que les fichiers d'articles (.md)
                 const mdFiles = files.filter(file => file.name.endsWith('.md'));
 
-                // Si la cliente a publié au moins un vrai article sur le CMS
                 if (mdFiles.length > 0) {
-                    blogGrid.innerHTML = ""; // On efface proprement les 3 articles de base du HTML
+                    blogGrid.innerHTML = ""; // On vide la grille
 
-                    // On boucle sur chaque fichier trouvé sur GitHub pour lire son contenu
                     for (const file of mdFiles) {
                         const fileResponse = await fetch(file.download_url);
                         const rawText = await fileResponse.text();
-                        
-                        // Découpage des infos de l'article (Titre, Image, Description)
                         const parsedData = parseMarkdownFrontmatter(rawText);
                         
-                        // Injection de la nouvelle carte d'article dynamique
                         const blogCard = document.createElement('article');
                         blogCard.className = "blog-card full-shadow";
                         blogCard.innerHTML = `
@@ -234,11 +227,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             } catch (error) {
-                console.error("Erreur de liaison avec l'API GitHub, conservation du contenu HTML :", error);
+                console.error("Erreur de liaison avec l'API GitHub Blog :", error);
             }
         }
 
-        // Fonction magique pour lire les variables (Frontmatter) du fichier Markdown
         function parseMarkdownFrontmatter(text) {
             const data = {};
             const matches = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
@@ -256,8 +248,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         initBlog();
     }
+
     // ==========================================================================
-    // LECTEUR DYNAMIQUE D'ARTICLE UNIQUE (CORRIGÉ & ROBUSTE)
+    // LECTEUR DYNAMIQUE D'ARTICLE UNIQUE (ISOLÉ & SÉCURISÉ)
     // ==========================================================================
     const articleContent = document.getElementById('article-content');
     
@@ -266,18 +259,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const fileName = urlParams.get('file');
 
         if (!fileName) {
-            articleContent.innerHTML = "<p class='center'>Article introuvable.</p>";
+            articleContent.innerHTML = "<p class='center'>Aucun article spécifié.</p>";
         } else {
             const repoOwner = "camelDOUMTSOP"; 
             const repoName = "wilau-bio-pro-site-fin";
             const articleUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/content/blog/${fileName}?ref=main`;
+
             async function loadArticle() {
                 try {
                     const response = await fetch(articleUrl);
-                    if (!response.ok) throw new Error("Article introuvable");
+                    if (!response.ok) throw new Error("Article introuvable sur GitHub");
                     const fileData = await response.json();
                     
-                    // Décodage UTF-8 propre et sécurisé
+                    // Décodage sécurisé compatible avec les politiques Netlify
                     const binaryString = atob(fileData.content.replace(/\s/g, ''));
                     const bytes = new Uint8Array(binaryString.length);
                     for (let i = 0; i < binaryString.length; i++) {
@@ -285,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     const rawText = new TextDecoder('utf-8').decode(bytes);
                     
-                    // REGEX SOUPLE : Gère les retours à la ligne \n du CMS et les espaces
+                    // Séparation Frontmatter / Corps
                     const matches = rawText.match(/^---\s*[\r\n]+([\s\S]*?)[\r\n]+---\s*([\s\S]*)$/);
                     let title = "Article";
                     let image = "";
@@ -308,14 +302,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         bodyHtml = rawText.replace(/^---[\s\S]*?---/, '');
                     }
 
-                    // Nettoyage et rendu du corps du texte (Markdown vers HTML)
+                    // Markdown basique vers HTML
                     let cleanBody = bodyHtml
                         .replace(/^### (.*$)/gim, '<h3 style="margin:25px 0 15px 0; color:var(--color-dark); font-size:1.4rem;">$1</h3>')
                         .replace(/\*\*(.*)\*\*/gim, '<strong style="color:var(--color-dark);">$1</strong>')
                         .trim()
                         .replace(/\n/g, '<br>');
 
-                    // Rendu final dans la page
+                    // Rendu final
                     articleContent.innerHTML = `
                         <h1 style="font-size: 2.2rem; font-family: 'Playfair Display', serif; margin-bottom: 15px; color: var(--color-dark);">${title}</h1>
                         <span style="color: var(--color-gold); font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 25px;">PAR WILAU MAGAZINE • CONSEIL BEAUTÉ</span>
@@ -325,11 +319,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                 } catch (error) {
-                    console.error(error);
+                    console.error("Erreur lors du chargement du lecteur d'article :", error);
                     articleContent.innerHTML = "<p class='center' style='color:red; text-align:center; padding: 2rem;'>Erreur lors du chargement de l'article.</p>";
                 }
             }
             loadArticle();
         }
     }
-});
+
+}); // 👈 Fermeture unique de DOMContentLoaded tout à la fin
